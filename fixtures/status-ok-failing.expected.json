@@ -1,0 +1,42 @@
+{
+  "expected_exit": 1,
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "belowThree",
+        "rendering": "{ count: 3 }",
+        "state": 3,
+        "state_value": {
+          "#meta": {},
+          "count": {
+            "#bigint": "3"
+          }
+        },
+        "verdict": "fail"
+      }
+    ],
+    "source": "status-ok-failing.qnt",
+    "source_mismatch": false,
+    "states": 4,
+    "status": "ok",
+    "summary": {
+      "fail": 1,
+      "pass": 0
+    },
+    "trace_sha256": "10067b0b2fccbd48b41fea8f71dfc3e8b1c6c7aee0a4559c04da7ddf0b63d605",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "status-ok-failing",
+  "invocation": {
+    "args": [
+      "status-ok-failing.qnt",
+      "status-ok-failing.itf.json",
+      "--main=Base",
+      "--invariant=belowThree"
+    ]
+  },
+  "requirement": "A9: a status of ok does not stop a genuine failure from exiting 1"
+}

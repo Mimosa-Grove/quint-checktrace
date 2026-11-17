@@ -1,0 +1,21 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "vars"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "vars-all-empty",
+  "invocation": {
+    "args": [
+      "vars-all-empty.qnt",
+      "vars-all-empty.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a vars array of empty strings collapses to one empty name and is refused (class 15)"
+}

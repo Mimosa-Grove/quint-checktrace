@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "source"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "meta-source-number-strict",
+  "invocation": {
+    "args": [
+      "meta-source-number-strict.qnt",
+      "meta-source-number-strict.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative",
+      "--strict-source"
+    ]
+  },
+  "requirement": "R36: a non-string #meta.source counts as absent under --strict-source"
+}

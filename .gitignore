@@ -1,0 +1,5 @@
+.ci-cache/
+.ci-deps/
+.ci-probe/
+_build/
+_apalache-out/

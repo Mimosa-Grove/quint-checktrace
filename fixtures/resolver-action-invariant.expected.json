@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "resolve",
+      "init",
+      "action"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "resolve",
+  "fixture": "resolver-action-invariant",
+  "invocation": {
+    "args": [
+      "resolver-action-invariant.qnt",
+      "resolver-action-invariant.itf.json",
+      "--main=ActionHolder",
+      "--invariant=init"
+    ]
+  },
+  "requirement": "R3: an action named as an invariant is refused, naming the declaration and its qualifier"
+}

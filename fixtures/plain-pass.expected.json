@@ -1,0 +1,75 @@
+{
+  "expected_exit": 0,
+  "expected_human": {
+    "coverage_line": "The verdict covers the recorded states only; it is not a proof.",
+    "header_patterns": [
+      "sha256=[0-9a-f]{12}([^0-9a-f]|$)"
+    ],
+    "header_tokens": [
+      "plain-pass.qnt",
+      "Plain",
+      "plain-pass.itf.json",
+      "source=plain/plain.qnt",
+      "states=4",
+      "status=ok",
+      "Quint 0.33.1",
+      "quint_evaluator",
+      "sha256=",
+      "mode checktrace"
+    ],
+    "pass_absent_tokens": [
+      "holds",
+      "valid",
+      "verified",
+      "proved",
+      "correct"
+    ],
+    "pass_wording": "no violation observed in this trace",
+    "single_line_header": true,
+    "status_glyphs": {
+      "fail": "✗",
+      "pass": "✓"
+    },
+    "summary_form": "Summary: 2 pass, 0 fail (exit 0) source-mismatch",
+    "summary_lines": 1
+  },
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "logLengthMatches",
+        "verdict": "pass"
+      },
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": "plain/plain.qnt",
+    "source_mismatch": true,
+    "states": 4,
+    "status": "ok",
+    "summary": {
+      "fail": 0,
+      "pass": 2
+    },
+    "trace_sha256": "96f7c24e3414e0f64bd6b6c50b581e8a4534aee099b26fd77a4114387bbd270d",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "producer-trace",
+  "fixture": "plain-pass",
+  "invocation": {
+    "args": [
+      "plain-pass.qnt",
+      "plain-pass.itf.json",
+      "--main=Plain",
+      "--invariant=nonNegative",
+      "--invariant=logLengthMatches"
+    ]
+  },
+  "provenance": {
+    "origin": "copied unmodified from traces/plain.itf.json; produced by quint 0.33.1 with the Rust backend"
+  },
+  "requirement": "A1: a clean trace with passing invariants"
+}

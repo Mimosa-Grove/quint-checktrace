@@ -1,0 +1,37 @@
+{
+  "category": "pass",
+  "derivation": "hand-pass.derivation.md",
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 3,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "a27be91d2026404b3a3588227e434cd0697bc8d08b08de25893045f0dcd75f86",
+    "unknown_top_level_fields": []
+  },
+  "expected_silent": [],
+  "expected_source": "hand",
+  "fixture": "hand-pass",
+  "invocation": {
+    "args": [
+      "hand-pass.qnt",
+      "hand-pass.itf.json",
+      "--main=HandPass",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R46: a passing fixture with a complete expected outcome"
+}

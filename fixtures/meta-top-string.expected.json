@@ -1,0 +1,21 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "#meta"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "meta-top-string",
+  "invocation": {
+    "args": [
+      "meta-top-string.qnt",
+      "meta-top-string.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a top-level #meta that is a string is refused (class 2)"
+}

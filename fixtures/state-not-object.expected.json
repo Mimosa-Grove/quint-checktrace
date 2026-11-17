@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "state",
+      "states/0"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "state-not-object",
+  "invocation": {
+    "args": [
+      "state-not-object.qnt",
+      "state-not-object.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a state that is not an object is refused (class 4)"
+}

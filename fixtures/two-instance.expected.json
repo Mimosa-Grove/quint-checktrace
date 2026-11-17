@@ -1,0 +1,38 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "both",
+        "verdict": "pass"
+      }
+    ],
+    "source": "two-instance.qnt",
+    "source_mismatch": false,
+    "states": 3,
+    "status": "ok",
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "be170f23d7afe2cdc45b1684bc7798a2e3f20868aec9526f1e931aaeac27b4a9",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "probe",
+  "fixture": "two-instance",
+  "invocation": {
+    "args": [
+      "two-instance.qnt",
+      "two-instance.itf.json",
+      "--main=TwoInstances",
+      "--invariant=both"
+    ]
+  },
+  "provenance": {
+    "origin": "copied unmodified from traces/two-instance.itf.json; produced with --max-steps=2",
+    "probe": "Probe: states 0, 1 and 2 each returned exit 0 with {\"results\":[{\"value\":true}]} (state 0 in probes/two-instance-eval.json, states 1 and 2 in probes/two-instance-eval-1.json and probes/two-instance-eval-2.json). Command: $HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/two-instance-eval.json"
+  },
+  "requirement": "A6: two instances in one module pin the per-alias variable-naming rule"
+}

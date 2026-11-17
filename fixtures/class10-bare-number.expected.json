@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "count",
+      "states/0/count"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "class10-bare-number",
+  "invocation": {
+    "args": [
+      "class10-bare-number.qnt",
+      "class10-bare-number.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a bare JSON number in a value position is refused (class 10)"
+}

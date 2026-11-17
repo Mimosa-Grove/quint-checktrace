@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "resolve",
+      "doubled",
+      "puredef"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "resolve",
+  "fixture": "resolver-puredef-invariant",
+  "invocation": {
+    "args": [
+      "resolver-puredef-invariant.qnt",
+      "resolver-puredef-invariant.itf.json",
+      "--main=PuredefHolder",
+      "--invariant=doubled"
+    ]
+  },
+  "requirement": "R3: a puredef-qualified definition named as an invariant is refused, naming the declaration and its qualifier"
+}

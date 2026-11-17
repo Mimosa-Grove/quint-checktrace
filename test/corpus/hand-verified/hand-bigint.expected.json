@@ -1,0 +1,37 @@
+{
+  "category": "big-integer",
+  "derivation": "hand-bigint.derivation.md",
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "atMax",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "f733185368e820602e12945f11912106a014057e77fd19570a15a06b98f91d6e",
+    "unknown_top_level_fields": []
+  },
+  "expected_silent": [],
+  "expected_source": "hand",
+  "fixture": "hand-bigint",
+  "invocation": {
+    "args": [
+      "hand-bigint.qnt",
+      "hand-bigint.itf.json",
+      "--main=HandBigMax",
+      "--invariant=atMax"
+    ]
+  },
+  "requirement": "R46: a big-integer fixture with the value and verdict derived by hand"
+}

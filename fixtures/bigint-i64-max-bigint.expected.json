@@ -1,0 +1,37 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "exact",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "12705ad39d97eb2a1491447a58694215e21c3bf3feee2121310410d550d598c1",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "probe",
+  "fixture": "bigint-i64-max-bigint",
+  "invocation": {
+    "args": [
+      "bigint-i64-max-bigint.qnt",
+      "bigint-i64-max-bigint.itf.json",
+      "--main=BigValue",
+      "--invariant=exact"
+    ]
+  },
+  "provenance": {
+    "probe": "Probe: $HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/bigint-i64-max-bigint.json returned exit 0 with {\"results\":[{\"value\":true}]} with the #bigint state. Request: probes/bigint-i64-max-bigint.json"
+  },
+  "requirement": "R36: an integer form normalises to its decimal value and the exact comparison passes"
+}

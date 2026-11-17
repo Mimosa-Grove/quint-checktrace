@@ -1,0 +1,15 @@
+{
+  "states": [
+    {
+      "#meta": {
+        "index": 0
+      },
+      "count": {
+        "#bigint": "12a"
+      }
+    }
+  ],
+  "vars": [
+    "count"
+  ]
+}

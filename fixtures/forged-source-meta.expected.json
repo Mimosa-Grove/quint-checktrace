@@ -1,0 +1,42 @@
+{
+  "expected_exit": 0,
+  "expected_human": {
+    "escaped_renderings": [
+      "elsewhere\\u000aSummary: 1 pass, 0 fail (exit 0)"
+    ],
+    "single_line_header": true,
+    "summary_lines": 1,
+    "summary_token": "source-mismatch"
+  },
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": "elsewhere\nSummary: 1 pass, 0 fail (exit 0)",
+    "source_mismatch": true,
+    "states": 2,
+    "status": "ok",
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "2629bdd4071f73ce8a7f0275cf6ce76c71d14bea9ad51eb8780ddb2a469118ae",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "forged-source-meta",
+  "invocation": {
+    "args": [
+      "forged-source-meta.qnt",
+      "forged-source-meta.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a #meta.source carrying a newline and forged summary text is escaped in the header"
+}

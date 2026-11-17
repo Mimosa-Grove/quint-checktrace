@@ -1,0 +1,35 @@
+(library
+ (name quint_checktrace_tests)
+ (wrapped false)
+ (modules property_support evaluator_property decoder_property)
+ (libraries quint_checktrace qcheck-core qcheck-core.runner))
+
+(test
+ (name property_main)
+ (modules property_main)
+ (libraries quint_checktrace_tests))
+
+(test
+ (name test_main)
+ (modules
+  test_main
+  corpus_support
+  resolver_cases
+  evaluator_cases
+  report_cases
+  gate_cases
+  resolver_scope_cases
+  stage_order_cases
+  descent_cases
+  taxonomy_cases)
+ (libraries quint_checktrace quint_checktrace_tests alcotest unix)
+ (deps
+  (source_tree ../fixtures)
+  (source_tree corpus)
+  (source_tree regressions)
+  schema-cases.json
+  ../docs/report-schema.json
+  ../docs/manifest.schema.json
+  ../docs/derivation-record.schema.json
+  ../bin/main.exe
+  ../bin/evaluator-digests.json))

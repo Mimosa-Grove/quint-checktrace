@@ -1,0 +1,21 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "vars"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "vars-not-array",
+  "invocation": {
+    "args": [
+      "vars-not-array.qnt",
+      "vars-not-array.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a wrong-typed vars field is refused (class 2)"
+}

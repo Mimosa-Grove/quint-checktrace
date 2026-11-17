@@ -1,0 +1,23 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "evaluate"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "probe",
+  "expected_stage": "evaluate",
+  "fixture": "bigint-beyond-i64-typescript",
+  "invocation": {
+    "args": [
+      "bigint-beyond-i64-typescript.qnt",
+      "bigint-beyond-i64-typescript.itf.json",
+      "--main=BigOnly",
+      "--invariant=bigPositive"
+    ]
+  },
+  "provenance": {
+    "probe": "Evaluator probe: run from the fixtures root, `$HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/bigint-beyond-i64.json` exited 101 with a panic at src/itf.rs:144:43, BigInt value does not fit in i64. Observed exit 101 and no result document. The checker maps the non-zero exit to exit 2 at stage evaluate. Request: probes/bigint-beyond-i64.json"
+  },
+  "requirement": "R36: a #bigint beyond i64 in an evaluated state exits 2 at stage evaluate"
+}

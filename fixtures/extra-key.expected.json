@@ -1,0 +1,36 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [
+      "noise"
+    ],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "8e04dd3d5ddc8439734f307b124ea1810a485e42a57be62678e5944012c643de",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "extra-key",
+  "invocation": {
+    "args": [
+      "extra-key.qnt",
+      "extra-key.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: an extra unrelated state key is stripped and listed as ignored"
+}

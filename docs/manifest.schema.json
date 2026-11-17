@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quint-checktrace:manifest:0.1.0",
+  "title": "quint-checktrace corpus gate manifest",
+  "description": "The reviewed manifest consumed by the corpus gate. The document is an array of rows, one row per candidate main module, identified by (path, main). A file with several runnable mains carries one row for each main. A file with no runnable main carries a single exclusion row whose main is null. This schema validates shape only. The semantic refusals cannot be expressed here: two rows with the same (path, main), a row whose invariants array repeats a name, a corpus file with no row, and a row whose file is absent are all gate refusals. The schema also cannot check that every invariant of a recorded main carries a status, or that the statuses match the committed derivation records. Nor can it check that a main row with no invariant carries neither `max_steps` nor `seed`.",
+  "type": "array",
+  "minItems": 1,
+  "items": {"$ref": "#/$defs/row"},
+  "$defs": {
+    "row": {
+      "description": "One manifest row. A row with a main names that main's invariants with a per-invariant status. A row without a main is an exclusion row and carries a row-level reason instead.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "main", "invariants"],
+      "properties": {
+        "path": {
+          "description": "The specification path relative to the corpus tree root, the directory that contains the real, third-party and synthetic trees. The pattern refuses an absolute path and any leading or interior parent-directory segment; the gate refuses the same shapes with exit 2 at stage resolve, naming the row.",
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^([^/]|[^/.][^/]+|\\.[^/.][^/]*|\\.\\.[^/]+)(/(|[^/]|[^/.][^/]+|\\.[^/.][^/]*|\\.\\.[^/]+))*$"
+        },
+        "main": {
+          "description": "The main module name, the value supplied as --main during derivation. Null marks a file with no runnable main.",
+          "type": ["string", "null"],
+          "minLength": 1
+        },
+        "invariants": {
+          "description": "One entry per invariant of this main. A row with a main but no invariant carries an empty array and a row-level reason.",
+          "type": "array",
+          "items": {"$ref": "#/$defs/invariant"}
+        },
+        "reason": {
+          "description": "The recorded reason a row is excluded: a library module, a file with no invariant, a file with no runnable main, or a Quint runtime error with its diagnostic code.",
+          "type": "string",
+          "minLength": 1
+        },
+        "max_steps": {
+          "description": "The --max-steps value used to derive this row's traces. Required when the row's invariants array is non-empty. A main row with no invariant has no derivation, so it carries neither this field nor seed and gives a row-level reason instead; the schema does not express that absence, which is a semantic rule (R33).",
+          "type": "integer",
+          "minimum": 0
+        },
+        "seed": {
+          "description": "The --seed value used to derive this row's traces, recorded as text in decimal or hexadecimal form (for example 1 or 0x1). Required when the row's invariants array is non-empty, on the same rule as max_steps.",
+          "type": "string",
+          "pattern": "^(0x[0-9a-fA-F]+|[0-9]+)$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"main": {"type": "null"}}, "required": ["main"]},
+          "then": {
+            "required": ["reason"],
+            "properties": {"invariants": {"maxItems": 0}}
+          }
+        },
+        {
+          "if": {"properties": {"invariants": {"minItems": 1}}, "required": ["invariants"]},
+          "then": {"required": ["max_steps", "seed"]}
+        },
+        {
+          "if": {"properties": {"invariants": {"maxItems": 0}}, "required": ["invariants"]},
+          "then": {"required": ["reason"]}
+        }
+      ]
+    },
+    "invariant": {
+      "description": "One invariant of a recorded main with its per-invariant status. A derive status means the invariant produced an admitted triple. An exclude status carries the recorded reason.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "status"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "status": {"enum": ["derive", "exclude"]},
+        "reason": {
+          "description": "The recorded reason for an exclusion, including the diagnostic code when the derivation ended in a runtime error. Required when status is exclude.",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "exclude"}}, "required": ["status"]},
+          "then": {"required": ["reason"]}
+        }
+      ]
+    }
+  }
+}

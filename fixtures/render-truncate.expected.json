@@ -1,0 +1,40 @@
+{
+  "expected_exit": 1,
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "blank",
+        "rendering": "{ text: \"éééééééééé\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001\\u0001...",
+        "state": 0,
+        "state_value": {
+          "#meta": {},
+          "text": "éééééééééé\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"
+        },
+        "verdict": "fail"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 1,
+      "pass": 0
+    },
+    "trace_sha256": "bafa4d7d215f16b6678d25dda54d24707ea84dfc0158bea41eefe16cc6831d33",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "render-truncate",
+  "invocation": {
+    "args": [
+      "render-truncate.qnt",
+      "render-truncate.itf.json",
+      "--main=Text",
+      "--invariant=blank"
+    ]
+  },
+  "requirement": "R27: the 200-code-point cap counts code points, and a truncated prefix stops at a complete \\uXXXX escape boundary: the 197 available code points end inside an escape here"
+}

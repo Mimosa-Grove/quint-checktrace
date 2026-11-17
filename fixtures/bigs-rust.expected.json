@@ -1,0 +1,42 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "exact",
+        "verdict": "pass"
+      },
+      {
+        "name": "ok",
+        "verdict": "pass"
+      }
+    ],
+    "source": "shapes/bigs.qnt",
+    "source_mismatch": true,
+    "states": 1,
+    "status": "ok",
+    "summary": {
+      "fail": 0,
+      "pass": 2
+    },
+    "trace_sha256": "5bba1d59bae357cd93874bae47cf8d8438ef7b44a85920f99f774b981725a8fe",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "producer-trace",
+  "fixture": "bigs-rust",
+  "invocation": {
+    "args": [
+      "bigs-rust.qnt",
+      "bigs-rust.itf.json",
+      "--main=Bigs",
+      "--invariant=exact",
+      "--invariant=ok"
+    ]
+  },
+  "provenance": {
+    "origin": "copied unmodified from traces/bigs.itf.json; the four values are 10^15, 9007199254740993, 999999999999999999 and -9007199254740993"
+  },
+  "requirement": "A5: the Rust {s,e,c} integer form is normalised before evaluation"
+}

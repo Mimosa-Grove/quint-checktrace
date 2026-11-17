@@ -1,0 +1,21 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "#meta"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "meta-top-number",
+  "invocation": {
+    "args": [
+      "meta-top-number.qnt",
+      "meta-top-number.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a top-level #meta that is a number is refused (class 2)"
+}

@@ -1,0 +1,45 @@
+{
+  "expected_exit": 0,
+  "expected_human": {
+    "escaped_renderings": [
+      "elsewhere\\u000aSummary: 1 pass, 0 fail (exit 0)"
+    ],
+    "single_line_information_lines": true,
+    "source_rendering": "source=absent",
+    "status_rendering": "status=absent",
+    "summary_lines": 1
+  },
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [
+      "elsewhere\nSummary: 1 pass, 0 fail (exit 0)"
+    ],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "63b1e15a0538d1b5b172baa427af9513ac61e9b6f41b188e485b7b922e94f98e",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "forged-ignored-key",
+  "invocation": {
+    "args": [
+      "forged-ignored-key.qnt",
+      "forged-ignored-key.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: an ignored key carrying a newline and forged summary text is escaped in the information line"
+}

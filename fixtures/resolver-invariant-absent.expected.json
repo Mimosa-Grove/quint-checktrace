@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "resolve",
+      "missing",
+      "nonNegative"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "resolve",
+  "fixture": "resolver-invariant-absent",
+  "invocation": {
+    "args": [
+      "resolver-invariant-absent.qnt",
+      "resolver-invariant-absent.itf.json",
+      "--main=MainHolder",
+      "--invariant=missing"
+    ]
+  },
+  "requirement": "R3: an --invariant name absent from the main module is refused, naming the declarations"
+}

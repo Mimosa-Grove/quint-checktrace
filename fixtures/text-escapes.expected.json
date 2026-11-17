@@ -1,0 +1,40 @@
+{
+  "expected_exit": 1,
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "blank",
+        "rendering": "{ text: \"a\\\"b\\\\c\" }",
+        "state": 0,
+        "state_value": {
+          "#meta": {},
+          "text": "a\"b\\c"
+        },
+        "verdict": "fail"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 1,
+      "pass": 0
+    },
+    "trace_sha256": "3accf98b4f40e803a3388cfb4adb1b44073697a6dfaa4f21737c4676ee8a908a",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "text-escapes",
+  "invocation": {
+    "args": [
+      "text-escapes.qnt",
+      "text-escapes.itf.json",
+      "--main=Text",
+      "--invariant=blank"
+    ]
+  },
+  "requirement": "R27: backslash and double quote in a violating state render with their JSON-style escapes, byte-exact"
+}

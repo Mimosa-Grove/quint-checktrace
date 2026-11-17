@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "#weird",
+      "states/0/r"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "class9-record-hash",
+  "invocation": {
+    "args": [
+      "class9-record-hash.qnt",
+      "class9-record-hash.itf.json",
+      "--main=Tagged",
+      "--invariant=tagIsX"
+    ]
+  },
+  "requirement": "R36: a record field name starting with # is refused (class 9)"
+}

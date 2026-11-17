@@ -1,0 +1,32 @@
+{
+  "loop": 1,
+  "states": [
+    {
+      "#meta": {
+        "index": 0
+      },
+      "count": {
+        "#bigint": "0"
+      }
+    },
+    {
+      "#meta": {
+        "index": 1
+      },
+      "count": {
+        "#bigint": "1"
+      }
+    },
+    {
+      "#meta": {
+        "index": 2
+      },
+      "count": {
+        "#bigint": "2"
+      }
+    }
+  ],
+  "vars": [
+    "count"
+  ]
+}

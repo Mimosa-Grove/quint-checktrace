@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "resolve",
+      "Absent",
+      "MainHolder"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "resolve",
+  "fixture": "resolver-main-absent",
+  "invocation": {
+    "args": [
+      "resolver-main-absent.qnt",
+      "resolver-main-absent.itf.json",
+      "--main=Absent",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R2: a --main name absent from the module list is refused, listing the module names"
+}

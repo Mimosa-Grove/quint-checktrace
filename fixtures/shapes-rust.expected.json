@@ -1,0 +1,42 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "allThere",
+        "verdict": "pass"
+      },
+      {
+        "name": "bigPositive",
+        "verdict": "pass"
+      }
+    ],
+    "source": "shapes/shapes.qnt",
+    "source_mismatch": true,
+    "states": 2,
+    "status": "ok",
+    "summary": {
+      "fail": 0,
+      "pass": 2
+    },
+    "trace_sha256": "24a3cd434f4254e9388e10cd239e133d6971454529ebdc20d1cb5df9a5a56b14",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "producer-trace",
+  "fixture": "shapes-rust",
+  "invocation": {
+    "args": [
+      "shapes-rust.qnt",
+      "shapes-rust.itf.json",
+      "--main=Shapes",
+      "--invariant=allThere",
+      "--invariant=bigPositive"
+    ]
+  },
+  "provenance": {
+    "origin": "copied unmodified from traces/shapes.itf.json (Rust backend)"
+  },
+  "requirement": "R14: every value form decodes and evaluates"
+}

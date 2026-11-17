@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "r",
+      "states/0/r"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "class13-int-for-record",
+  "invocation": {
+    "args": [
+      "class13-int-for-record.qnt",
+      "class13-int-for-record.itf.json",
+      "--main=RecRow",
+      "--invariant=ok"
+    ]
+  },
+  "requirement": "R36: an integer where a record is declared is refused (class 13)"
+}

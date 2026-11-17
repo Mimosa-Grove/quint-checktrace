@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "byte",
+      "0"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "json-garbage",
+  "invocation": {
+    "args": [
+      "json-garbage.qnt",
+      "json-garbage.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a plain non-JSON byte sequence is refused (class 1)"
+}

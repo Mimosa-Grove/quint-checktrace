@@ -1,0 +1,97 @@
+{
+  "expected_exit": 1,
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "positive",
+        "rendering": "{ b: true, l: [1, 2], m: Map(10 -> \"a\", 2 -> \"b\"), n: -7, s: Set(1, 10, 2), t: (1, \"x\"), u: (), v: Circle(5) }",
+        "state": 0,
+        "state_value": {
+          "#meta": {},
+          "b": true,
+          "l": [
+            {
+              "#bigint": "1"
+            },
+            {
+              "#bigint": "2"
+            }
+          ],
+          "m": {
+            "#map": [
+              [
+                {
+                  "#bigint": "10"
+                },
+                "a"
+              ],
+              [
+                {
+                  "#bigint": "2"
+                },
+                "b"
+              ]
+            ]
+          },
+          "n": {
+            "#bigint": "-7"
+          },
+          "s": {
+            "#set": [
+              {
+                "#bigint": "1"
+              },
+              {
+                "#bigint": "10"
+              },
+              {
+                "#bigint": "2"
+              }
+            ]
+          },
+          "t": {
+            "#tup": [
+              {
+                "#bigint": "1"
+              },
+              "x"
+            ]
+          },
+          "u": {
+            "tag": "UNIT"
+          },
+          "v": {
+            "tag": "Circle",
+            "value": {
+              "#bigint": "5"
+            }
+          }
+        },
+        "verdict": "fail"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 1,
+      "pass": 0
+    },
+    "trace_sha256": "4703c1e8c4b9bf34d351838351058a9447fede29e1d0049153e376bff68e2f07",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "render-shapes",
+  "invocation": {
+    "args": [
+      "render-shapes.qnt",
+      "render-shapes.itf.json",
+      "--main=RenderShapes",
+      "--invariant=positive"
+    ]
+  },
+  "requirement": "R27/A11: every renderable value form is rendered byte-exactly, including the unit form and the Set and Map sort rules"
+}

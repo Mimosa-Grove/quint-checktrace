@@ -1,0 +1,50 @@
+{
+  "category": "violation",
+  "derivation": "hand-mixed.derivation.md",
+  "expected_exit": 1,
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "belowThree",
+        "rendering": "{ count: 3 }",
+        "state": 3,
+        "state_value": {
+          "#meta": {},
+          "count": {
+            "#bigint": "3"
+          }
+        },
+        "verdict": "fail"
+      },
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 4,
+    "status": null,
+    "summary": {
+      "fail": 1,
+      "pass": 1
+    },
+    "trace_sha256": "b0c455494ded03e06bdc3db7d6475213b11071a1298315aca66aedf374c05404",
+    "unknown_top_level_fields": []
+  },
+  "expected_silent": [],
+  "expected_source": "hand",
+  "fixture": "hand-mixed",
+  "invocation": {
+    "args": [
+      "hand-mixed.qnt",
+      "hand-mixed.itf.json",
+      "--main=HandMixed",
+      "--invariant=belowThree",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R46: every invariant of the invocation accounted for, one FAIL and one PASS"
+}

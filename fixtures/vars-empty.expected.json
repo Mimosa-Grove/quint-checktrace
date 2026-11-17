@@ -1,0 +1,21 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "vars"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "vars-empty",
+  "invocation": {
+    "args": [
+      "vars-empty.qnt",
+      "vars-empty.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: an empty vars array is refused (class 15)"
+}

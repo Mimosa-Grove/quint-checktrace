@@ -1,0 +1,55 @@
+{
+  "expected_exit": 1,
+  "expected_human": {
+    "fail_tokens": [
+      "no violation observed in this trace",
+      "✓"
+    ],
+    "fail_wording": "FAIL at state 3: { count: 3 }",
+    "single_line_header": true,
+    "summary_form": "Summary: 0 pass, 1 fail (exit 1) source-mismatch",
+    "summary_lines": 1
+  },
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "belowThree",
+        "rendering": "{ count: 3 }",
+        "state": 3,
+        "state_value": {
+          "#meta": {},
+          "count": {
+            "#bigint": "3"
+          }
+        },
+        "verdict": "fail"
+      }
+    ],
+    "source": "violation/violating.qnt",
+    "source_mismatch": true,
+    "states": 4,
+    "status": "violation",
+    "summary": {
+      "fail": 1,
+      "pass": 0
+    },
+    "trace_sha256": "e339809bd0e557c942acadc38f258bec6a04485d420dbc7ef2dcc9cacee4ebfd",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "producer-trace",
+  "fixture": "violating-trace",
+  "invocation": {
+    "args": [
+      "violating-trace.qnt",
+      "violating-trace.itf.json",
+      "--main=Violating",
+      "--invariant=belowThree"
+    ]
+  },
+  "provenance": {
+    "origin": "copied unmodified from traces/violating.itf.json; produced by quint 0.33.1 with the Rust backend"
+  },
+  "requirement": "A2: a finite violating trace, FAIL at its last state"
+}

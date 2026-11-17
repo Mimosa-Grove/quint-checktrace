@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "resolve",
+      "settled",
+      "temporal"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "resolve",
+  "fixture": "resolver-temporal-invariant",
+  "invocation": {
+    "args": [
+      "resolver-temporal-invariant.qnt",
+      "resolver-temporal-invariant.itf.json",
+      "--main=TemporalHolder",
+      "--invariant=settled"
+    ]
+  },
+  "requirement": "R3: a temporal definition named as an invariant is refused, naming the declaration and its qualifier"
+}

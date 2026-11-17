@@ -1,0 +1,76 @@
+{
+  "expected_exit": 1,
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "belowZero",
+        "rendering": "{ l: [7], m: Map(\"a\" -> 3), r: { n: 1000000000000000 }, s: Set(2), t: (4, 5) }",
+        "state": 0,
+        "state_value": {
+          "#meta": {},
+          "l": [
+            {
+              "#bigint": "7"
+            }
+          ],
+          "m": {
+            "#map": [
+              [
+                "a",
+                {
+                  "#bigint": "3"
+                }
+              ]
+            ]
+          },
+          "r": {
+            "n": {
+              "#bigint": "1000000000000000"
+            }
+          },
+          "s": {
+            "#set": [
+              {
+                "#bigint": "2"
+              }
+            ]
+          },
+          "t": {
+            "#tup": [
+              {
+                "#bigint": "4"
+              },
+              {
+                "#bigint": "5"
+              }
+            ]
+          }
+        },
+        "verdict": "fail"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 1,
+      "pass": 0
+    },
+    "trace_sha256": "9fd20108a2329047784debb44f5a6f1a80c3d426fb30d08642d090a6929fc294",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "bigint-nested",
+  "invocation": {
+    "args": [
+      "bigint-nested.qnt",
+      "bigint-nested.itf.json",
+      "--main=NestedBig",
+      "--invariant=belowZero"
+    ]
+  },
+  "requirement": "R17: the {s,e,c} form normalises at nested declared-int positions: a record field, a list element, a set element, a map value and a tuple slot"
+}

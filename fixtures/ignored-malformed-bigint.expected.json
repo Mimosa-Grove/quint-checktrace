@@ -1,0 +1,39 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [
+      "broken"
+    ],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "0f046baca9332d8b53bf36d69700d3cc0b16a78f9d5b8f1abb9b76d130d795d9",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "probe",
+  "fixture": "ignored-malformed-bigint",
+  "invocation": {
+    "args": [
+      "ignored-malformed-bigint.qnt",
+      "ignored-malformed-bigint.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "provenance": {
+    "probe": "Probe: $HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/ignored-malformed-bigint-eval.json returned exit 0 with {\"results\":[{\"value\":true}]} for the stripped state. Request: probes/ignored-malformed-bigint-eval.json"
+  },
+  "requirement": "A7: an ignored key carrying a malformed integer-shaped object is stripped unread"
+}

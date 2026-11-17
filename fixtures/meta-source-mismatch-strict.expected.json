@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "source"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "meta-source-mismatch-strict",
+  "invocation": {
+    "args": [
+      "meta-source-mismatch-strict.qnt",
+      "meta-source-mismatch-strict.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative",
+      "--strict-source"
+    ]
+  },
+  "requirement": "A16: a present string #meta.source differing from the spec path is refused under --strict-source"
+}

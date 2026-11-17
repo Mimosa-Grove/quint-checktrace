@@ -1,0 +1,50 @@
+{
+  "expected_exit": 1,
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "bounded",
+        "rendering": "{ Instance::s::seen: Set(), Instance::s::x: 0 }",
+        "state": 0,
+        "state_value": {
+          "#meta": {},
+          "Instance::s::seen": {
+            "#set": []
+          },
+          "Instance::s::x": {
+            "#bigint": "0"
+          }
+        },
+        "verdict": "fail"
+      }
+    ],
+    "source": "const-instance/instance.qnt",
+    "source_mismatch": true,
+    "states": 4,
+    "status": "ok",
+    "summary": {
+      "fail": 1,
+      "pass": 0
+    },
+    "trace_sha256": "5c12859a2ae1beb89964e3a62715a47f38ed6769293f2e93f64703f185e3285a",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "probe",
+  "fixture": "const-instance",
+  "invocation": {
+    "args": [
+      "const-instance.qnt",
+      "const-instance.itf.json",
+      "--main=Instance",
+      "--invariant=bounded"
+    ]
+  },
+  "provenance": {
+    "companion_file": "spec.qnt",
+    "origin": "regenerated with Quint 0.33.1 (Rust backend, --max-steps=3) from a producer copy of the fixture spec carrying init and step actions; the spec imports Spec(C = Set(1, 2, 3)) from ./spec",
+    "probe": "Probe: states 0, 1, 2 and 3 each returned exit 0. State 0 returned {\"results\":[{\"value\":false}]} because 0 is not in C = Set(1, 2, 3); states 1 to 3 returned {\"results\":[{\"value\":true}]}. Requests: probes/const-instance-eval.json and -1, -2, -3. Command: $HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/const-instance-eval.json"
+  },
+  "requirement": "A6: instance variable names and a constant supplied by an instance binding; the invariant reads C"
+}

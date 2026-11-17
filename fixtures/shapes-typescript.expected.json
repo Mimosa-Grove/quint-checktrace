@@ -1,0 +1,42 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "allThere",
+        "verdict": "pass"
+      },
+      {
+        "name": "bigPositive",
+        "verdict": "pass"
+      }
+    ],
+    "source": "shapes/shapes.qnt",
+    "source_mismatch": true,
+    "states": 2,
+    "status": "ok",
+    "summary": {
+      "fail": 0,
+      "pass": 2
+    },
+    "trace_sha256": "6da965ef12fa6da597fa2649788f59236ea48c4c9cdf5832aeb9d2846c822764",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "producer-trace",
+  "fixture": "shapes-typescript",
+  "invocation": {
+    "args": [
+      "shapes-typescript.qnt",
+      "shapes-typescript.itf.json",
+      "--main=Shapes",
+      "--invariant=allThere",
+      "--invariant=bigPositive"
+    ]
+  },
+  "provenance": {
+    "origin": "copied unmodified from traces/shapes-ts.itf.json (TypeScript backend)"
+  },
+  "requirement": "R14: the TypeScript backend value forms decode and evaluate"
+}

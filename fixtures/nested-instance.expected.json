@@ -1,0 +1,38 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "deep",
+        "verdict": "pass"
+      }
+    ],
+    "source": "nested-instance.qnt",
+    "source_mismatch": false,
+    "states": 3,
+    "status": "ok",
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "8bfc7a8af3521778b903fe011c90b681a150343fd1d360ee5434e1b1d8477b8e",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "probe",
+  "fixture": "nested-instance",
+  "invocation": {
+    "args": [
+      "nested-instance.qnt",
+      "nested-instance.itf.json",
+      "--main=Outer",
+      "--invariant=deep"
+    ]
+  },
+  "provenance": {
+    "origin": "copied unmodified from traces/nested-instance.itf.json; produced with --max-steps=2",
+    "probe": "Probe: states 0, 1 and 2 each returned exit 0 with {\"results\":[{\"value\":true}]} (state 0 in probes/nested-instance-eval.json, states 1 and 2 in probes/nested-instance-eval-1.json and probes/nested-instance-eval-2.json). Command: $HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/nested-instance-eval.json"
+  },
+  "requirement": "A6: a nested instance pins the two-level variable-naming rule, whose qualifier is the direct importer's module plus the alias"
+}

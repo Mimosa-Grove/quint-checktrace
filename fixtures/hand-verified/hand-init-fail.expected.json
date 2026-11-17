@@ -1,0 +1,45 @@
+{
+  "category": "initial-state-violation",
+  "derivation": "hand-init-fail.derivation.md",
+  "expected_exit": 1,
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "positive",
+        "rendering": "{ count: 0 }",
+        "state": 0,
+        "state_value": {
+          "#meta": {},
+          "count": {
+            "#bigint": "0"
+          }
+        },
+        "verdict": "fail"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 2,
+    "status": null,
+    "summary": {
+      "fail": 1,
+      "pass": 0
+    },
+    "trace_sha256": "40241566168369789f30bd156f8b024596239e330c7b6dd53e19c9f3ef81631e",
+    "unknown_top_level_fields": []
+  },
+  "expected_silent": [],
+  "expected_source": "hand",
+  "fixture": "hand-init-fail",
+  "invocation": {
+    "args": [
+      "hand-init-fail.qnt",
+      "hand-init-fail.itf.json",
+      "--main=HandInitFail",
+      "--invariant=positive"
+    ]
+  },
+  "requirement": "R46: an invariant false at the initial state"
+}

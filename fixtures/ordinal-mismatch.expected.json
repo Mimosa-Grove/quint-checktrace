@@ -1,0 +1,23 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "index",
+      "states/1",
+      "2"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "ordinal-mismatch",
+  "invocation": {
+    "args": [
+      "ordinal-mismatch.qnt",
+      "ordinal-mismatch.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: an #meta.index differing from the array position is refused (class 6)"
+}

@@ -1,0 +1,21 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "loop"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "loop-out-of-range",
+  "invocation": {
+    "args": [
+      "loop-out-of-range.qnt",
+      "loop-out-of-range.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a loop index at the state count is refused (class 7)"
+}

@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "source"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "meta-source-absent-strict",
+  "invocation": {
+    "args": [
+      "meta-source-absent-strict.qnt",
+      "meta-source-absent-strict.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative",
+      "--strict-source"
+    ]
+  },
+  "requirement": "R11/A16: a trace with no #meta.source is refused under --strict-source"
+}

@@ -1,0 +1,31 @@
+{
+  "contents": "the first property failure under the accept-all mutant, shrunk by QCheck, committed with its seed and input",
+  "records": [
+    {
+      "expected_exit": 2,
+      "expected_stage": "resolve",
+      "name": "accepted-undeclared-invariant",
+      "seed": 20261115,
+      "main": "M0",
+      "invariants": [
+        "threshold"
+      ],
+      "ir": {
+        "modules": [
+          {
+            "name": "M0",
+            "declarations": [
+              {
+                "kind": "var",
+                "name": "v",
+                "typeAnnotation": {
+                  "kind": "int"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

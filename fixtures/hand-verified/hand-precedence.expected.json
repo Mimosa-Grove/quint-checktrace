@@ -1,0 +1,29 @@
+{
+  "category": "multi-invariant-precedence",
+  "derivation": "hand-precedence.derivation.md",
+  "expected_diagnostic": {
+    "must_contain": [
+      "divLater",
+      "1",
+      "QNT503"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_silent": [
+    "belowOne",
+    "divLater"
+  ],
+  "expected_source": "hand",
+  "expected_stage": "evaluate",
+  "fixture": "hand-precedence",
+  "invocation": {
+    "args": [
+      "hand-precedence.qnt",
+      "hand-precedence.itf.json",
+      "--main=HandPrecedence",
+      "--invariant=belowOne",
+      "--invariant=divLater"
+    ]
+  },
+  "requirement": "R46: a multi-invariant precedence case; an evaluation error outranks a completed FAIL"
+}

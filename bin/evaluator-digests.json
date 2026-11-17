@@ -1,0 +1,9 @@
+{
+  "version": "v0.7.1",
+  "pins": [
+    {
+      "platform": "linux-x86_64",
+      "sha256": "1764f11e8c1a9f644af5c934e9a71645b313f82f8db1284965866a2f417da9aa"
+    }
+  ]
+}

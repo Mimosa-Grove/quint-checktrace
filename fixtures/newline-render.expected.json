@@ -1,0 +1,46 @@
+{
+  "expected_exit": 1,
+  "expected_human": {
+    "summary_lines": 1
+  },
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "blank",
+        "rendering": "{ text: \"\\u000a\" }",
+        "state": 0,
+        "state_value": {
+          "#meta": {},
+          "text": "\n"
+        },
+        "verdict": "fail"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 1,
+      "pass": 0
+    },
+    "trace_sha256": "24dd74e74c0dc23732ce60ded2d52fb37febb952e92a501d997b3695ddffb0f9",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "probe",
+  "fixture": "newline-render",
+  "invocation": {
+    "args": [
+      "newline-render.qnt",
+      "newline-render.itf.json",
+      "--main=Text",
+      "--invariant=blank"
+    ]
+  },
+  "provenance": {
+    "probe": "Probe: $HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/newline-render.json returned exit 0 with {\"results\":[{\"value\":false}]} for state 0. Request: probes/newline-render.json"
+  },
+  "requirement": "R36: a violating state carrying a newline renders as a single escaped line"
+}

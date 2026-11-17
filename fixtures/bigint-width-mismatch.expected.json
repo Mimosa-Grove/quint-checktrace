@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "x",
+      "states/0/x"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "bigint-width-mismatch",
+  "invocation": {
+    "args": [
+      "bigint-width-mismatch.qnt",
+      "bigint-width-mismatch.itf.json",
+      "--main=BigRefusal",
+      "--invariant=ok"
+    ]
+  },
+  "requirement": "R36: a malformed Rust big-integer object is refused (class 12)"
+}

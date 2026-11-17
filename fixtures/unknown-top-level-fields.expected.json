@@ -1,0 +1,44 @@
+{
+  "expected_exit": 0,
+  "expected_human": {
+    "information_tokens": [
+      "alpha",
+      "zeta"
+    ],
+    "single_line_information_lines": true
+  },
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 2,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "37e69a7f11b5e66f0d3cdf0305b42cb867547ca9561ac28fc02c916097d9b123",
+    "unknown_top_level_fields": [
+      "alpha",
+      "zeta"
+    ]
+  },
+  "expected_source": "requirements",
+  "fixture": "unknown-top-level-fields",
+  "invocation": {
+    "args": [
+      "unknown-top-level-fields.qnt",
+      "unknown-top-level-fields.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R29: unknown top-level fields are accepted and listed sorted by name"
+}

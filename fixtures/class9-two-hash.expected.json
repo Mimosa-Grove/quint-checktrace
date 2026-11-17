@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "#",
+      "states/0/count"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "class9-two-hash",
+  "invocation": {
+    "args": [
+      "class9-two-hash.qnt",
+      "class9-two-hash.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: an object with more than one # key is refused (class 9)"
+}

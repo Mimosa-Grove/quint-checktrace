@@ -1,0 +1,554 @@
+{
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "fixture": "cli-values",
+  "invocations": [
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--timeout=0"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "0"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--timeout=0"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "0"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--timeout=-1"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "-1"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--timeout=-1"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "-1"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--timeout=abc"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "abc"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--timeout=abc"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "abc"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--timeout=1.5"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "1.5"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--timeout=1.5"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "1.5"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--timeout=inf"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "inf"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--timeout=inf"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "inf"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--timeout=nan"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "nan"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--timeout=nan"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "nan"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--deadline=0"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--deadline",
+          "0"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--deadline=0"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--deadline",
+          "0"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--deadline=-1"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--deadline",
+          "-1"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--deadline=-1"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--deadline",
+          "-1"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--deadline=abc"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--deadline",
+          "abc"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--deadline=abc"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--deadline",
+          "abc"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--deadline=1.5"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--deadline",
+          "1.5"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--deadline=1.5"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--deadline",
+          "1.5"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--deadline=inf"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--deadline",
+          "inf"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--deadline=inf"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--deadline",
+          "inf"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--deadline=nan"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--deadline",
+          "nan"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--deadline=nan"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--deadline",
+          "nan"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--gate-deadline=0"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--gate-deadline",
+          "0"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--gate-deadline=-1"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--gate-deadline",
+          "-1"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--gate-deadline=abc"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--gate-deadline",
+          "abc"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--gate-deadline=1.5"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--gate-deadline",
+          "1.5"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--gate-deadline=inf"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--gate-deadline",
+          "inf"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--gate-deadline=nan"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--gate-deadline",
+          "nan"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "cli-values.qnt",
+        "cli-values.itf.json",
+        "--main=Base",
+        "--invariant=nonNegative",
+        "--timeout=30",
+        "--deadline=5"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "--deadline"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    },
+    {
+      "args": [
+        "--gate",
+        "corpus",
+        "manifest.json",
+        "hand-verified",
+        "--timeout=30",
+        "--deadline=5"
+      ],
+      "expected_diagnostic": {
+        "must_contain": [
+          "--timeout",
+          "--deadline"
+        ]
+      },
+      "expected_exit": 2,
+      "expected_stage": "usage"
+    }
+  ],
+  "requirement": "R6, R36: malformed --timeout, --deadline and --gate-deadline values, and a --timeout larger than --deadline, exit 2 at stage usage"
+}

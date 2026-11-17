@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "#map",
+      "states/0/m"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "class10-map",
+  "invocation": {
+    "args": [
+      "class10-map.qnt",
+      "class10-map.itf.json",
+      "--main=MapValue",
+      "--invariant=ok"
+    ]
+  },
+  "requirement": "R36: a #map entry that is not a two-element array is refused (class 10)"
+}

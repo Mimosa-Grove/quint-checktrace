@@ -1,0 +1,37 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "de0c12ad3f865d29e412ba4003c4dc3ad90d1cadbd4b2f7af308f5dd454ede5b",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "probe",
+  "fixture": "vars-omits-declared",
+  "invocation": {
+    "args": [
+      "vars-omits-declared.qnt",
+      "vars-omits-declared.itf.json",
+      "--main=Plain",
+      "--invariant=nonNegative"
+    ]
+  },
+  "provenance": {
+    "probe": "Probe: $HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/vars-omits-declared-eval.json returned exit 0 with {\"results\":[{\"value\":true}]} for state 0. Request: probes/vars-omits-declared-eval.json"
+  },
+  "requirement": "A7: a vars array omitting a declared state key is accepted; state keys drive the comparison"
+}

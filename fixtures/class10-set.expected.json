@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "#set",
+      "states/0/s"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "class10-set",
+  "invocation": {
+    "args": [
+      "class10-set.qnt",
+      "class10-set.itf.json",
+      "--main=SetValue",
+      "--invariant=ok"
+    ]
+  },
+  "requirement": "R36: a #set that is not an array is refused (class 10)"
+}

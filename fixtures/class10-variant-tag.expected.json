@@ -1,0 +1,23 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "tag",
+      "variant",
+      "states/0/v"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "class10-variant-tag",
+  "invocation": {
+    "args": [
+      "class10-variant-tag.qnt",
+      "class10-variant-tag.itf.json",
+      "--main=Variant",
+      "--invariant=isRed"
+    ]
+  },
+  "requirement": "R36: a malformed variant is refused (class 10)"
+}

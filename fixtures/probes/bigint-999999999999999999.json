@@ -1,0 +1,1 @@
+{"table":{"1":{"kind":"var","name":"x","typeAnnotation":{"id":0,"kind":"int"},"id":1,"depth":0}},"state":{"#meta":{},"x":{"s":{"#bigint":"1"},"e":{"#bigint":"17"},"c":[{"#bigint":"9999"},{"#bigint":"99999999999999"}]}},"exprs":[{"id":3,"kind":"app","opcode":"eq","args":[{"id":1,"kind":"name","name":"x"},{"id":2,"kind":"int","value":999999999999999999}]}]}

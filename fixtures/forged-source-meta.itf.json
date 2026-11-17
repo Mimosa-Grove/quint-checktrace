@@ -1,0 +1,27 @@
+{
+  "#meta": {
+    "source": "elsewhere\nSummary: 1 pass, 0 fail (exit 0)",
+    "status": "ok"
+  },
+  "states": [
+    {
+      "#meta": {
+        "index": 0
+      },
+      "count": {
+        "#bigint": "0"
+      }
+    },
+    {
+      "#meta": {
+        "index": 1
+      },
+      "count": {
+        "#bigint": "1"
+      }
+    }
+  ],
+  "vars": [
+    "count"
+  ]
+}

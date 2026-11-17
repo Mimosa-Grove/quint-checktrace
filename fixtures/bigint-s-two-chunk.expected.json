@@ -1,0 +1,24 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "class 12",
+      "malformed Rust big-integer",
+      "field s sign text 2 is not canonical",
+      "states/0/x"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "bigint-s-two-chunk",
+  "invocation": {
+    "args": [
+      "bigint-s-two-chunk.qnt",
+      "bigint-s-two-chunk.itf.json",
+      "--main=BigRefusal",
+      "--invariant=ok"
+    ]
+  },
+  "requirement": "R36: the chunk form whose members pass the type-independent checks keeps class 12 (R17)"
+}

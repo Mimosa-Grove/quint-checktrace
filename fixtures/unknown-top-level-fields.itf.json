@@ -1,0 +1,25 @@
+{
+  "alpha": 2,
+  "states": [
+    {
+      "#meta": {
+        "index": 0
+      },
+      "count": {
+        "#bigint": "0"
+      }
+    },
+    {
+      "#meta": {
+        "index": 1
+      },
+      "count": {
+        "#bigint": "1"
+      }
+    }
+  ],
+  "vars": [
+    "count"
+  ],
+  "zeta": 1
+}

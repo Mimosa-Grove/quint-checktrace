@@ -1,0 +1,45 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [
+      "mbt::actionTaken",
+      "mbt::nondetPicks"
+    ],
+    "invariants": [
+      {
+        "name": "logLengthMatches",
+        "verdict": "pass"
+      },
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": "plain/plain.qnt",
+    "source_mismatch": true,
+    "states": 4,
+    "status": "ok",
+    "summary": {
+      "fail": 0,
+      "pass": 2
+    },
+    "trace_sha256": "30a829bd25f9d2db4ec1a5d8d719d3621a85e8c7eeed42ac859ac18997dc8118",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "producer-trace",
+  "fixture": "mbt-vars",
+  "invocation": {
+    "args": [
+      "mbt-vars.qnt",
+      "mbt-vars.itf.json",
+      "--main=Plain",
+      "--invariant=nonNegative",
+      "--invariant=logLengthMatches"
+    ]
+  },
+  "provenance": {
+    "origin": "copied unmodified from traces/plain-mbt.itf.json (quint run --mbt); the vars array carries duplicate mbt:: entries"
+  },
+  "requirement": "R36: extra mbt:: variables are removed before evaluation"
+}

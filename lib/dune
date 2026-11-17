@@ -1,0 +1,24 @@
+(library
+ (name quint_checktrace)
+ (wrapped false)
+ (modules
+  version
+  utf8
+  json_ast
+  json_parse
+  json_writer
+  sha256
+  ir_types
+  itf_value
+  decoder
+  schema
+  resolver
+  failure
+  proc
+  quint
+  evaluator
+  check
+  report
+  cli
+  gate)
+ (libraries unix))

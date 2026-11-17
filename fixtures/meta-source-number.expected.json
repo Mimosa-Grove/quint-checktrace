@@ -1,0 +1,53 @@
+{
+  "expected_exit": 0,
+  "expected_human": {
+    "information_absent_tokens": [
+      "42",
+      "7"
+    ],
+    "information_tokens": [
+      "source",
+      "status",
+      "number"
+    ],
+    "single_line_information_lines": true,
+    "source_rendering": "source=absent",
+    "status_rendering": "status=absent",
+    "summary_absent_tokens": [
+      "source-mismatch"
+    ]
+  },
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "source_type": "number",
+    "states": 2,
+    "status": null,
+    "status_type": "number",
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "d84262b32da25d1f908fcfc8bfd7caed41209728faed86daa54c0bbd90c5b0dd",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "meta-source-number",
+  "invocation": {
+    "args": [
+      "meta-source-number.qnt",
+      "meta-source-number.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a non-string #meta.source or #meta.status is treated as absent, with its type recorded"
+}

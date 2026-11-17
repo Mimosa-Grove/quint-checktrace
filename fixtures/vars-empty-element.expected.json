@@ -1,0 +1,21 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "vars"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "vars-empty-element",
+  "invocation": {
+    "args": [
+      "vars-empty-element.qnt",
+      "vars-empty-element.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a remaining empty string in vars is refused (class 15)"
+}

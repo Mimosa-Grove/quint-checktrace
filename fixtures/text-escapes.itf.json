@@ -1,0 +1,13 @@
+{
+  "states": [
+    {
+      "#meta": {
+        "index": 0
+      },
+      "text": "a\"b\\c"
+    }
+  ],
+  "vars": [
+    "text"
+  ]
+}

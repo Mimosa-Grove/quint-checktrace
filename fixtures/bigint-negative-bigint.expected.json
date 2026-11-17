@@ -1,0 +1,37 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "exact",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "2505eaf8586fcebb05fd75c6802219dd2285f62a968535a45fb1b791f47cf610",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "probe",
+  "fixture": "bigint-negative-bigint",
+  "invocation": {
+    "args": [
+      "bigint-negative-bigint.qnt",
+      "bigint-negative-bigint.itf.json",
+      "--main=BigValue",
+      "--invariant=exact"
+    ]
+  },
+  "provenance": {
+    "probe": "Probe: $HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/bigint-negative-bigint.json returned exit 0 with {\"results\":[{\"value\":true}]} with the #bigint state. Request: probes/bigint-negative-bigint.json"
+  },
+  "requirement": "R36: the #bigint twin of an integer form gives the identical verdict"
+}

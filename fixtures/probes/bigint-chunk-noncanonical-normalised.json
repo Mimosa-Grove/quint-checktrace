@@ -1,0 +1,1 @@
+{"table":{"1":{"kind":"var","name":"x","typeAnnotation":{"id":0,"kind":"int"},"id":1,"depth":0}},"state":{"#meta":{},"x":{"#bigint":"100000000000001"}},"exprs":[{"id":3,"kind":"app","opcode":"eq","args":[{"id":1,"kind":"name","name":"x"},{"id":2,"kind":"int","value":100000000000001}]}]}

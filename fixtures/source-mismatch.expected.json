@@ -1,0 +1,42 @@
+{
+  "expected_exit": 0,
+  "expected_human": {
+    "information_tokens": [
+      "source",
+      "elsewhere/base.qnt"
+    ],
+    "single_line_information_lines": true,
+    "summary_token": "source-mismatch"
+  },
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": "elsewhere/base.qnt",
+    "source_mismatch": true,
+    "states": 2,
+    "status": "ok",
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "dae28532409e651539c77fb47ad8a2dbbc1c682456ce9a78d69af545bae8b859",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "source-mismatch",
+  "invocation": {
+    "args": [
+      "source-mismatch.qnt",
+      "source-mismatch.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "A17: a differing source prints the source-mismatch token without refusing"
+}

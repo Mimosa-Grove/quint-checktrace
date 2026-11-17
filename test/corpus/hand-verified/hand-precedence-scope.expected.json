@@ -1,0 +1,50 @@
+{
+  "category": "multi-invariant-precedence",
+  "derivation": "hand-precedence-scope.derivation.md",
+  "expected_exit": 1,
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      },
+      {
+        "name": "zeroDiv",
+        "rendering": "{ count: 0 }",
+        "state": 0,
+        "state_value": {
+          "#meta": {},
+          "count": {
+            "#bigint": "0"
+          }
+        },
+        "verdict": "fail"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 3,
+    "status": null,
+    "summary": {
+      "fail": 1,
+      "pass": 1
+    },
+    "trace_sha256": "a27be91d2026404b3a3588227e434cd0697bc8d08b08de25893045f0dcd75f86",
+    "unknown_top_level_fields": []
+  },
+  "expected_silent": [],
+  "expected_source": "hand",
+  "fixture": "hand-precedence-scope",
+  "invocation": {
+    "args": [
+      "hand-precedence-scope.qnt",
+      "hand-precedence-scope.itf.json",
+      "--main=HandPrecedenceScope",
+      "--invariant=zeroDiv",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R46: an early-stopped invariant's later evaluation error is outside the exit-2 scope, beside a still-active invariant"
+}

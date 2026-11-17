@@ -1,0 +1,18 @@
+{
+  "states": [
+    {
+      "#meta": {
+        "index": 0
+      },
+      "count": {
+        "#bigint": "0"
+      },
+      "elsewhere\nSummary: 1 pass, 0 fail (exit 0)": {
+        "#bigint": "1"
+      }
+    }
+  ],
+  "vars": [
+    "count"
+  ]
+}

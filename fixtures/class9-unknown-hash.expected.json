@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "#foo",
+      "states/0/count"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "class9-unknown-hash",
+  "invocation": {
+    "args": [
+      "class9-unknown-hash.qnt",
+      "class9-unknown-hash.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: an unknown # prefixed constructor is refused (class 9)"
+}

@@ -1,0 +1,1 @@
+{"table":{"1":{"kind":"var","name":"b","typeAnnotation":{"id":0,"kind":"tup","fields":{"kind":"row","fields":[],"other":{"kind":"empty"}}},"id":1,"depth":0}},"state":{"#meta":{},"b":{"tag":"UNIT"}},"exprs":[{"id":3,"kind":"app","opcode":"Tup","args":[{"id":1,"kind":"name","name":"b"},{"id":2,"kind":"app","opcode":"Tup","args":[]}]}]}

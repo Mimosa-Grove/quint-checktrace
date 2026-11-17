@@ -1,0 +1,31 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "b",
+      "states",
+      "0",
+      "states/0/b",
+      "tag",
+      "UNIT",
+      "record",
+      "unit"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "probe",
+  "expected_stage": "decode",
+  "fixture": "collision-unit",
+  "invocation": {
+    "args": [
+      "collision-unit.qnt",
+      "collision-unit.itf.json",
+      "--main=UnitCollision",
+      "--invariant=tagIsUnit"
+    ]
+  },
+  "provenance": {
+    "probe": "Evaluator probe: at a record-typed position the one-key UNIT object is read as a unit value, and field access panics. Command, run from the fixtures root: $HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/unit-record-field.json Observed at exit 101: thread 'main' panicked at src/value.rs:779:18: Expected record"
+  },
+  "requirement": "R36: a one-key UNIT object at a record-typed position is refused at decode (class 16)"
+}

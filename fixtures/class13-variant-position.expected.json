@@ -1,0 +1,23 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "v",
+      "0",
+      "states/0/v"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "class13-variant-position",
+  "invocation": {
+    "args": [
+      "class13-variant-position.qnt",
+      "class13-variant-position.itf.json",
+      "--main=Variant",
+      "--invariant=isRed"
+    ]
+  },
+  "requirement": "R36: a record at a variant-typed position is refused (class 13)"
+}

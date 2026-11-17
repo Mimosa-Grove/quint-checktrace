@@ -1,0 +1,21 @@
+{
+  "states": [
+    {
+      "#meta": {
+        "index": 0
+      },
+      "r": {
+        "extra": {
+          "#bigint": "7"
+        },
+        "tag": "x",
+        "value": {
+          "#bigint": "42"
+        }
+      }
+    }
+  ],
+  "vars": [
+    "r"
+  ]
+}

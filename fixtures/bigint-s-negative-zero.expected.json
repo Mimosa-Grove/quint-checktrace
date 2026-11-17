@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "s",
+      "states/0/x"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "bigint-s-negative-zero",
+  "invocation": {
+    "args": [
+      "bigint-s-negative-zero.qnt",
+      "bigint-s-negative-zero.itf.json",
+      "--main=BigRefusal",
+      "--invariant=ok"
+    ]
+  },
+  "requirement": "R36: a malformed Rust big-integer object is refused (class 12)"
+}

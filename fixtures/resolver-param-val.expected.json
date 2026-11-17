@@ -1,0 +1,21 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "resolve",
+      "threshold"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "resolve",
+  "fixture": "resolver-param-val",
+  "invocation": {
+    "args": [
+      "resolver-param-val.qnt",
+      "resolver-param-val.itf.json",
+      "--main=ParamHolder",
+      "--invariant=threshold"
+    ]
+  },
+  "requirement": "R3: a parameterised val named as an invariant is refused"
+}

@@ -1,0 +1,282 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quint-checktrace:report:0.1.0",
+  "title": "quint-checktrace machine report",
+  "description": "The JSON document printed on standard output by quint-checktrace --format=json on exit 0 or exit 1. Every field name is part of the printed report contract. On exit 2 no report document is emitted and this schema does not apply: the diagnostic is plain text on standard error. The schema validates shape and the cap on a FAIL row's rendering, counted in code points as JSON Schema counts them, and it expresses one direction of the exit/summary relation: exit 0 forces fail to be 0, and exit 1 forces fail to be at least 1. The remaining relations are semantic rules the schema cannot check, because a report carries no outcome field for them: the two summary counts summing to the length of the invariants array, each summary count against the verdicts of the invariant rows (the pass count against the pass rows and the fail count against the fail rows), the invariants array's rows sorted by name, one row per requested invariant with duplicate request names collapsed, a FAIL row's state index against the trace's recorded states, the loop range against the state count, the sorted order of the name arrays, `trace.ignored_vars` membership (exactly the state keys the specification does not declare, `#meta` excepted), `trace.unknown_top_level_fields` membership (exactly the trace's unknown top-level names), the key set of a FAIL row's `state_value` (exactly the specification's declared variables plus `#meta`), and `source_mismatch`'s truth condition: true exactly when `#meta.source` is a present string differing from `spec.path`. The presence rule for `trace.source_type` and `trace.status_type` is also a semantic rule: each is present exactly when the corresponding `#meta` field is present as a non-string and absent when that field is absent or a string; the schema's conditionals express only the one-way implication that a present type field forces the corresponding source or status to null. The schema also does not check `state_value`, `rendering`, the path and digest fields or the state count against the trace or invocation bytes; those are checked by the decoder and report tests.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tool", "mode", "spec", "trace", "evaluator", "invariants", "summary", "exit"],
+  "properties": {
+    "tool": {
+      "description": "The producing instrument.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": {"const": "quint-checktrace"},
+        "version": {"const": "0.1.0"}
+      }
+    },
+    "mode": {
+      "description": "The report mode word. It distinguishes this report from a lint report in the sibling instrument.",
+      "const": "checktrace"
+    },
+    "spec": {
+      "description": "The specification under check.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "main", "quint_version", "ir_sha256"],
+      "properties": {
+        "path": {
+          "description": "The specification path exactly as supplied on the command line. No canonicalisation is applied.",
+          "type": "string"
+        },
+        "main": {
+          "description": "The main module name passed as --main.",
+          "type": "string",
+          "minLength": 1
+        },
+        "quint_version": {
+          "description": "The version reported by quint --version, pinned to 0.33.1.",
+          "const": "0.33.1"
+        },
+        "ir_sha256": {
+          "description": "The sha256 of the parse IR file the checker read, as 64 lowercase hexadecimal characters.",
+          "allOf": [{"$ref": "#/$defs/sha256"}]
+        }
+      }
+    },
+    "trace": {
+      "description": "The trace under check and the metadata read from it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "source", "status", "source_mismatch", "states", "loop", "ignored_vars", "unknown_top_level_fields"],
+      "properties": {
+        "path": {
+          "description": "The trace path exactly as supplied on the command line. No canonicalisation is applied.",
+          "type": "string"
+        },
+        "sha256": {
+          "description": "The sha256 of the trace file bytes, as 64 lowercase hexadecimal characters.",
+          "allOf": [{"$ref": "#/$defs/sha256"}]
+        },
+        "source": {
+          "description": "The trace's own #meta.source value. It is null when the field is absent or when the present value is not a string.",
+          "type": ["string", "null"]
+        },
+        "status": {
+          "description": "The trace's own #meta.status value. It is informational and never decides a verdict. It is null when the field is absent or when the present value is not a string.",
+          "type": ["string", "null"]
+        },
+        "source_type": {
+          "description": "Present only when #meta.source is present as a non-string. It carries the observed JSON type name, for example number. Absent when the field is absent or a string.",
+          "type": "string",
+          "enum": ["null", "boolean", "number", "array", "object"]
+        },
+        "status_type": {
+          "description": "Present only when #meta.status is present as a non-string. It carries the observed JSON type name, for example number. Absent when the field is absent or a string.",
+          "type": "string",
+          "enum": ["null", "boolean", "number", "array", "object"]
+        },
+        "source_mismatch": {
+          "description": "True exactly when #meta.source is a present string that differs from the supplied specification path. False when the source matches, is absent or is non-string.",
+          "type": "boolean"
+        },
+        "states": {
+          "description": "The number of recorded states in the trace.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "loop": {
+          "description": "The trace's top-level loop index, or null when the trace carries no loop. When present it is an integer within the state range; the range check is performed by the decoder.",
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "ignored_vars": {
+          "description": "The state keys the specification does not declare, sorted by name. A state's #meta is never listed.",
+          "type": "array",
+          "items": {"type": "string", "not": {"const": "#meta"}},
+          "uniqueItems": true
+        },
+        "unknown_top_level_fields": {
+          "description": "The names of unknown top-level trace fields, sorted by name.",
+          "type": "array",
+          "items": {"type": "string",
+                    "not": {"enum": ["vars", "states", "#meta", "loop", "params"]}},
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {"required": ["source_type"]},
+          "then": {"properties": {"source": {"type": "null"}}}
+        },
+        {
+          "if": {"required": ["status_type"]},
+          "then": {"properties": {"status": {"type": "null"}}}
+        },
+        {
+          "if": {"properties": {"source_mismatch": {"const": true}}, "required": ["source_mismatch"]},
+          "then": {"properties": {"source": {"type": "string"}}}
+        }
+      ]
+    },
+    "evaluator": {
+      "description": "The evaluator binary the checker invoked.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "description": "The resolved evaluator path. It is the explicit --evaluator value when one was given, otherwise the pinned default path.",
+          "type": "string"
+        },
+        "sha256": {
+          "description": "The sha256 of the evaluator binary bytes, as 64 lowercase hexadecimal characters.",
+          "allOf": [{"$ref": "#/$defs/sha256"}]
+        }
+      }
+    },
+    "invariants": {
+      "description": "One row per requested invariant, sorted by name. A pass row carries name and verdict only; state, state_value and rendering are omitted, never null.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {"$ref": "#/$defs/passRow"},
+          {"$ref": "#/$defs/failRow"}
+        ]
+      }
+    },
+    "summary": {
+      "description": "The verdict counts. The relation of the two counts to the invariants array is stated in the document description.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pass", "fail"],
+      "properties": {
+        "pass": {"type": "integer", "minimum": 0},
+        "fail": {"type": "integer", "minimum": 0}
+      }
+    },
+    "exit": {
+      "description": "The process exit code. Zero means every requested invariant passed; one means at least one failed.",
+      "type": "integer",
+      "enum": [0, 1]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"exit": {"const": 0}}, "required": ["exit"]},
+      "then": {"properties": {"summary": {"properties": {"fail": {"const": 0}}}}}
+    },
+    {
+      "if": {"properties": {"exit": {"const": 1}}, "required": ["exit"]},
+      "then": {"properties": {"summary": {"properties": {"fail": {"minimum": 1}}}}}
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "description": "A sha256 digest rendered as 64 lowercase hexadecimal characters.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "passRow": {
+      "description": "A passing verdict row. The wording of a pass is fixed by the report contract and is not carried in the row.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "verdict"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "verdict": {"const": "pass"}
+      }
+    },
+    "failRow": {
+      "description": "A failing verdict row, naming the first violating state and carrying the forwarded state at that index plus its capped rendering. The rendering is at most 200 Unicode characters including any ellipsis.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "verdict", "state", "state_value", "rendering"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "verdict": {"const": "fail"},
+        "state": {
+          "description": "The zero-based index of the first violating state.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "state_value": {
+          "description": "The complete forwarded state at that index: the declared variables as sent to the evaluator, with integers normalised, plus #meta as the empty object. Ignored keys are stripped.",
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/itfValue"},
+          "propertyNames": {"anyOf": [{"const": "#meta"},
+                                      {"pattern": "^[^#]"}]},
+          "required": ["#meta"],
+          "properties": {
+            "#meta": {"type": "object", "maxProperties": 0}
+          }
+        },
+        "rendering": {
+          "description": "The report rendering of the forwarded state, fields sorted by name, capped at 200 Unicode characters.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      }
+    },
+    "itfValue": {
+      "description": "An ITF value in a forwarded state. The decoded value grammar admits booleans, strings, arbitrary-precision integer objects, arrays, tuples, sets, maps, variants, records and the unit form: {\"tag\":\"UNIT\"} at a unit-typed position, forwarded as received and admitted here through the record branch. Integers accepted in the Rust {s,e,c} form are normalised to the decimal #bigint form before the state is forwarded. A record carries no field name starting with #: an object with such a key is a class 9 refusal at decode and never reaches a report.",
+      "anyOf": [
+        {"type": "boolean"},
+        {"type": "string"},
+        {"type": "array", "items": {"$ref": "#/$defs/itfValue"}},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["#bigint"],
+          "properties": {"#bigint": {"type": "string", "pattern": "^-?[0-9]+$"}}
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["#tup"],
+          "properties": {"#tup": {"type": "array", "items": {"$ref": "#/$defs/itfValue"}}}
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["#set"],
+          "properties": {"#set": {"type": "array", "items": {"$ref": "#/$defs/itfValue"}}}
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["#map"],
+          "properties": {
+            "#map": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": {"$ref": "#/$defs/itfValue"}
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tag", "value"],
+          "properties": {
+            "tag": {"type": "string"},
+            "value": {"$ref": "#/$defs/itfValue"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/itfValue"},
+          "propertyNames": {"pattern": "^[^#]"}
+        }
+      ]
+    }
+  }
+}

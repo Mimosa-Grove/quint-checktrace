@@ -1,0 +1,4 @@
+
+thread 'main' (1902142) panicked at src/itf.rs:144:43:
+BigInt value does not fit in i64: TryFromBigIntError { original: 18446744073709551616 }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

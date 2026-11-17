@@ -1,0 +1,14 @@
+(executable
+ (name build_fixtures)
+ (modules build_fixtures fixture_table)
+ (libraries quint_checktrace unix))
+
+(executable
+ (name derive_registry)
+ (modules derive_registry)
+ (libraries quint_checktrace unix))
+
+(executable
+ (name bench_deadline)
+ (modules bench_deadline)
+ (libraries quint_checktrace unix))

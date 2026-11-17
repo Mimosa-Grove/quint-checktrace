@@ -1,0 +1,47 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [
+      "__InLoop",
+      "__q::temporalProps_init",
+      "__saved___temporal_t_1",
+      "__saved___temporal_t_2",
+      "__saved_x",
+      "__temporal_t_1",
+      "__temporal_t_2",
+      "__temporal_t_2_unroll",
+      "__temporal_t_2_unroll_prev"
+    ],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 2,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "91d2fe53cd2c652481cb3e1eab6098a926ebf77fce9fa904f3284dbc00073595",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "producer-trace",
+  "fixture": "apalache-instrumentation",
+  "invocation": {
+    "args": [
+      "apalache-instrumentation.qnt",
+      "apalache-instrumentation.itf.json",
+      "--main=LassoCheck",
+      "--invariant=nonNegative"
+    ]
+  },
+  "provenance": {
+    "origin": "copied unmodified from traces/lasso.itf.json (Apalache 0.62.4 temporal counterexample)"
+  },
+  "requirement": "R36: Apalache __ instrumentation is ignored when every spec variable is present"
+}

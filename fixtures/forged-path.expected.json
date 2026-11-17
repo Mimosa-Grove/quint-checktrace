@@ -1,0 +1,41 @@
+{
+  "expected_exit": 0,
+  "expected_human": {
+    "escaped_renderings": [
+      "forged-path\\u000aSummary: 1 pass, 0 fail (exit 0)/trace.itf.json"
+    ],
+    "single_line_header": true,
+    "summary_lines": 1
+  },
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 2,
+    "status": "ok",
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "5388846bd7d76c5b48970e6d65bed003ba7355cfbb2ee0c442b730b28e773402",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "forged-path",
+  "invocation": {
+    "args": [
+      "forged-path.qnt",
+      "forged-path\nSummary: 1 pass, 0 fail (exit 0)/trace.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a trace file path carrying a newline and forged summary text is escaped in the header"
+}

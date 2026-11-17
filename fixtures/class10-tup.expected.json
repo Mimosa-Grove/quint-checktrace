@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "#tup",
+      "states/0/t"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "class10-tup",
+  "invocation": {
+    "args": [
+      "class10-tup.qnt",
+      "class10-tup.itf.json",
+      "--main=TupValue",
+      "--invariant=ok"
+    ]
+  },
+  "requirement": "R36: a #tup that is not an array is refused (class 10)"
+}

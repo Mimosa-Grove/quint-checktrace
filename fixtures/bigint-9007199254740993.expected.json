@@ -1,0 +1,37 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "exact",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "423bfc2a5cebd8c565f3d0e9f191d7073dcca58ccd963fed30707f164ba5c30f",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "probe",
+  "fixture": "bigint-9007199254740993",
+  "invocation": {
+    "args": [
+      "bigint-9007199254740993.qnt",
+      "bigint-9007199254740993.itf.json",
+      "--main=BigValue",
+      "--invariant=exact"
+    ]
+  },
+  "provenance": {
+    "probe": "Evaluator probe: run from the fixtures root, `$HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/bigint-9007199254740993-normalised.json` returned exit 0 with {\"results\":[{\"value\":true}]} on the normalised state {\"#bigint\":\"9007199254740993\"}. The unnormalised {s,e,c} state returned false at exit 0, which is the silent wrong value the normalisation prevents. Request: probes/bigint-9007199254740993-normalised.json"
+  },
+  "requirement": "R36: an integer form normalises to its decimal value and the exact comparison passes"
+}

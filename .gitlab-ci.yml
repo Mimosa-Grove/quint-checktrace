@@ -1,0 +1,205 @@
+# .gitlab-ci.yml - the repository gate.
+# One before_script installs the pinned toolchain (Quint, the OCaml switch,
+# the evaluator, the lint and verification tools); the jobs run the
+# repository's own gates. The OCaml switch is cached across runs.
+stages:
+  - test
+
+variables:
+  QUINT_VERSION: "0.33.1"
+  OCAML_VERSION: "5.3.0"
+  DUNE_VERSION: "3.17.2"
+  OCAMLFORMAT_VERSION: "0.29.0"
+  ZANUDA_VERSION: "2.0.0"
+  QUINT_AUDIT_PIN: "git+https://github.com/Mimosa-Grove/quint-audit.git#c676e36"
+  OPAMROOT: "$CI_PROJECT_DIR/.ci-deps/opam"
+
+cache:
+  key: opam-$OCAML_VERSION-$DUNE_VERSION
+  paths:
+    - .ci-deps/opam
+
+default:
+  image: node:20-bookworm
+  timeout: 60m
+  before_script:
+    # Row: the runner clones as root; git otherwise refuses the checkout for
+    # a job user with a different ownership.
+    - git config --global --add safe.directory "$CI_PROJECT_DIR"
+    - apt-get update -qq
+    - apt-get install -y -qq --no-install-recommends ca-certificates curl git jq
+      build-essential diffutils opam m4 pkg-config rsync unzip bubblewrap
+    # Apalache, the bounded model checker behind `quint verify`, is a JVM
+    # application and the base image ships no Java: the spec-verify job fails
+    # without it. Pin the headless JDK and assert the major version.
+    - apt-get install -y -qq --no-install-recommends openjdk-17-jre-headless
+    - java -version 2>&1 | grep -q 'openjdk version "17\.'
+    - java -version 2>&1 | grep 'openjdk version'
+    # Quint toolchain and the version assertion.
+    - npm install -g "@informalsystems/quint@${QUINT_VERSION}"
+    - test "$(quint --version)" = "$QUINT_VERSION"
+    # OCaml toolchain: a cached switch at the pinned compiler, with the dune
+    # version and the libraries the suite links, the formatting tool, the
+    # lint tool and the specification linter.
+    - |
+      if [ ! -d "$OPAMROOT/$OCAML_VERSION" ]; then
+        opam init --disable-sandboxing --bare --no-setup --yes
+        opam switch create "$OCAML_VERSION" --yes
+      fi
+    - eval "$(opam env --switch="$OCAML_VERSION" --set-switch)"
+    - opam install --yes "dune.$DUNE_VERSION" cmdliner alcotest qcheck
+      "ocamlformat.$OCAMLFORMAT_VERSION" "zanuda.$ZANUDA_VERSION"
+      "$QUINT_AUDIT_PIN"
+    - test "$(dune --version)" = "$DUNE_VERSION"
+    - test "$(ocamlformat --version)" = "$OCAMLFORMAT_VERSION"
+    - test "$(ocamlopt -version)" = "$OCAML_VERSION"
+    - zanuda -version
+    # Evaluator provisioning: the pinned Quint fetches the Rust evaluator on
+    # first use; the digest is asserted against the shipped table before any
+    # gate runs.
+    - mkdir -p .ci-probe && printf 'module Tiny {\n  var count: int\n  action init = count'"'"' = 0\n  action step = count'"'"' = count + 1\n  val nonNegative = count >= 0\n}\n' > .ci-probe/tiny.qnt
+    - cd .ci-probe && quint run tiny.qnt --main=Tiny --backend=rust --max-samples=1 --max-steps=2 --seed=0x1 --invariant=nonNegative --out-itf=tiny.itf.json && cd "$CI_PROJECT_DIR"
+    - |
+      expected=$(jq -r '.pins[] | select(.platform=="linux-x86_64") | .sha256' bin/evaluator-digests.json)
+      actual=$(sha256sum "$HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator" | cut -d' ' -f1)
+      if [ "$actual" != "$expected" ]; then
+        echo "evaluator digest mismatch: expected $expected, got $actual"
+        exit 1
+      fi
+    # Toolchain audit: every binary a job below invokes must be on PATH. The
+    # image supplies the shell utilities; the installs above supply the rest.
+    # A missing tool fails here, before a job fails obscurely.
+    - |
+      missing=0
+      for tool in basename cp cut diff find gcc git grep head jq m4 make \
+                  mktemp node npm ocamlopt ocamlformat opam pkg-config \
+                  printf quint quint-audit rsync sha256sum sort tail \
+                  unzip zanuda java; do
+        if ! command -v "$tool" >/dev/null 2>&1; then
+          echo "toolchain: $tool is missing"; missing=1
+        fi
+      done
+      [ "$missing" = 0 ] && echo "toolchain: every invoked binary is present"
+
+gate:
+  stage: test
+  script:
+    # The repository's own entry point: dune build, fixture regeneration
+    # byte-identity, Quint parse over the fixture specifications, and the
+    # test suite (which replays the corpus gate registry).
+    - ./run_tests.sh
+    # Gate-mode smoke beside the suite: the committed registry must agree on
+    # every triple and print its counts and end marker.
+    - |
+      eval "$(opam env --switch="$OCAML_VERSION" --set-switch)"
+      _build/default/bin/main.exe --gate test/corpus/corpus \
+        test/corpus/manifest.json test/corpus/hand-verified
+
+fmt:
+  stage: test
+  script:
+    - eval "$(opam env --switch="$OCAML_VERSION" --set-switch)"
+    - dune build @fmt
+
+lint:
+  stage: test
+  script:
+    - eval "$(opam env --switch="$OCAML_VERSION" --set-switch)"
+    - zanuda -dir .
+
+spec-lint:
+  stage: test
+  script:
+    - |
+      set -e
+      # The specification lint baseline: every scoped .qnt must exit its
+      # recorded code. The non-zero rows are quint-audit-side limitations
+      # recorded in fixtures/README.md (the instance-qualified-invariant
+      # false positive and the integer-literal range refusal) and the three
+      # intentional synthetic regression specs.
+      expected_rc() {
+        case "$1" in
+          fixtures/two-instance.qnt) echo 1;;
+          fixtures/bigint-i64-max.qnt|fixtures/bigint-i64-max-bigint.qnt|\
+          fixtures/bigint-i64-min.qnt|fixtures/bigint-i64-min-bigint.qnt|\
+          fixtures/hand-verified/hand-bigint.qnt) echo 2;;
+          test/corpus/hand-verified/hand-bigint.qnt) echo 2;;
+          test/regressions/record-values/recvalue.qnt|\
+          test/regressions/record-values/recvalue-list.qnt|\
+          test/regressions/record-values/recvalue-variant.qnt) echo 1;;
+          *) echo 0;;
+        esac
+      }
+      fail=0
+      for f in $(find fixtures test/corpus/hand-verified test/regressions -name '*.qnt' | sort); do
+        [ "$(basename "$f")" = "spec.qnt" ] && continue
+        quint-audit lint "$f" >/dev/null 2>&1; rc=$?
+        want=$(expected_rc "$f")
+        if [ "$rc" != "$want" ]; then
+          echo "lint: $f exited $rc, expected $want"
+          fail=1
+        fi
+      done
+      [ "$fail" = 0 ] && echo "spec lint: scoped set clean against the baseline"
+
+spec-verify:
+  stage: test
+  timeout: 90m
+  script:
+    - |
+      set -e
+      # Bounded verification over the corpus gate's derive triples: the
+      # same (path, main, invariant) set the registry replays, at
+      # max-steps=3. The expected verdict of every run is recorded here:
+      # most invariants verify clean; a recorded set is falsifiable at the
+      # bound (the corpus is byte-pinned evidence, and a counterexample
+      # found in it is a fact about the spec's source, not a repository
+      # defect); vizIR exceeds the model checker's default 4 GB heap on
+      # both its invariants (a recorded limitation of that specification's
+      # size). A run that deviates from its recorded verdict is a red
+      # pipeline: the verification verdicts must reproduce.
+      expect() {
+        case "$1/$2" in
+          catalogue-partb/cataloguePresenceIsInert|\
+          catalogue-record/cataloguePresenceIsInert|\
+          scope-model/cataloguePresenceIsInert|\
+          alias_commands/uniqueNames|\
+          configuration/markdownLocationValid|\
+          conflict_resolution/conflictResolutionValid|\
+          default_values/statusValid|\
+          interactive_mode/historyMatchesResponses|\
+          task_archiving/noTaskInBoth|\
+          task_attributes/ratingsInRange|\
+          task_counts/nonNegativeCount|\
+          task_management/idsNotEmpty|\
+          undo_functionality/idsNotEmpty|\
+          version-drift/inv)
+            echo violation ;;
+          ir/p2|ir/mutantEq)
+            echo heap-out ;;
+          *) echo ok ;;
+        esac
+      }
+      classify() {
+        if printf '%s' "$1" | grep -q 'Ran out of heap memory'; then echo heap-out
+        elif printf '%s' "$1" | grep -q '\[violation\] Found an issue'; then echo violation
+        elif printf '%s' "$1" | grep -q '\[ok\] No violation found'; then echo ok
+        else echo no-verdict
+        fi
+      }
+      cd test/corpus/corpus
+      jq -r '.[] | select(.main != null) | . as $r | .invariants[] | [$r.path, $r.main, .name] | @tsv' ../manifest.json \
+        | while IFS=$'\t' read -r path main inv; do
+          base=$(basename "$path" .qnt)
+          want=$(expect "$base" "$inv")
+          rc=0
+          out=$(quint verify "$path" --main="$main" --invariant="$inv" --max-steps=3 2>&1) || rc=$?
+          got=$(classify "$out")
+          if [ "$got" != "$want" ]; then
+            echo "verify: $path (main $main) invariant $inv: expected $want, got $got (exit $rc)"
+            printf '%s\n' "$out" | tail -5
+            exit 1
+          fi
+          echo "verify: $inv [$got] as recorded"
+        done
+      echo "spec verify: every derive triple reproduced its recorded verdict"

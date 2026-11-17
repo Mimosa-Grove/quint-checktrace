@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "count",
+      "states/0/count"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "duplicate-members",
+  "invocation": {
+    "args": [
+      "duplicate-members.qnt",
+      "duplicate-members.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: duplicate members inside a state are refused, naming the member and its path (class 2)"
+}

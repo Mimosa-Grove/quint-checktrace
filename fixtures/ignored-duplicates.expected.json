@@ -1,0 +1,36 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [
+      "extra"
+    ],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "dff9b483931067b73cbc6e4973041fd49176caf2ed1602ffc1b97672857ea1c4",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "ignored-duplicates",
+  "invocation": {
+    "args": [
+      "ignored-duplicates.qnt",
+      "ignored-duplicates.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: duplicate members inside an ignored key's value are never inspected and are accepted"
+}

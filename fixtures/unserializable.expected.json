@@ -1,0 +1,23 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "#unserializable",
+      "count",
+      "states/0"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "unserializable",
+  "invocation": {
+    "args": [
+      "unserializable.qnt",
+      "unserializable.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: the #unserializable form is refused (class 11)"
+}

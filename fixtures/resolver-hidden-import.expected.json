@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "resolve",
+      "hidden",
+      "visible"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "resolve",
+  "fixture": "resolver-hidden-import",
+  "invocation": {
+    "args": [
+      "resolver-hidden-import.qnt",
+      "resolver-hidden-import.itf.json",
+      "--main=HiddenHolder",
+      "--invariant=hidden"
+    ]
+  },
+  "requirement": "R3: a name declared only in an imported module, absent from the main module's declarations, is refused"
+}

@@ -1,0 +1,37 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "isRed",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "ddc38fd071c06de4b7db52806fa0b7c7065848d9b85bc49a50dfc2ed85114031",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "probe",
+  "fixture": "variant-accepted",
+  "invocation": {
+    "args": [
+      "variant-accepted.qnt",
+      "variant-accepted.itf.json",
+      "--main=Variant",
+      "--invariant=isRed"
+    ]
+  },
+  "provenance": {
+    "probe": "Evaluator probe: a two-key tag/value value evaluates equal to the variant Red. Command, run from the fixtures root: $HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/variant-eq.json Observed at exit 0: {\"results\":[{\"value\":true}]}"
+  },
+  "requirement": "R36: the exact two-key tag/value object at a non-record-typed position is a variant"
+}

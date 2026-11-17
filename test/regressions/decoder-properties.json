@@ -1,0 +1,36 @@
+{
+  "contents": "the shrunk counter-examples from the three decoder properties under their deliberate mutants, committed with the seed and input",
+  "records": [
+    {
+      "property": "totality",
+      "seed": 20261115,
+      "input": ""
+    },
+    {
+      "property": "normalisation",
+      "seed": 20261115,
+      "input": "0"
+    },
+    {
+      "property": "normalisation",
+      "seed": 20261115,
+      "input": "-9223372036854775808"
+    },
+    {
+      "property": "normalisation",
+      "seed": 20261115,
+      "input": "9223372036854775807"
+    },
+    {
+      "property": "report-determinism",
+      "seed": 20261115,
+      "input": "{\"vars\":[\"v\"],\"states\":[{\"v\":false},{\"v\":false},{\"v\":false},{\"v\":false}]}",
+      "declarations": [ [ "v", "bool" ] ]
+    },
+    {
+      "property": "report-determinism",
+      "seed": 20261115,
+      "fixture": "plain-pass.itf.json"
+    }
+  ]
+}

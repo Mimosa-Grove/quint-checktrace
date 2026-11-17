@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "resolve",
+      "doubled",
+      "def"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "resolve",
+  "fixture": "resolver-def-invariant",
+  "invocation": {
+    "args": [
+      "resolver-def-invariant.qnt",
+      "resolver-def-invariant.itf.json",
+      "--main=DefHolder",
+      "--invariant=doubled"
+    ]
+  },
+  "requirement": "R3: a def-qualified definition named as an invariant is refused, naming the declaration and its qualifier"
+}

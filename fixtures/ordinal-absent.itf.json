@@ -1,0 +1,17 @@
+{
+  "states": [
+    {
+      "count": {
+        "#bigint": "0"
+      }
+    },
+    {
+      "count": {
+        "#bigint": "1"
+      }
+    }
+  ],
+  "vars": [
+    "count"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "expected_exit": 1,
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [
+      "extra"
+    ],
+    "invariants": [
+      {
+        "name": "belowThree",
+        "rendering": "{ count: 1000000000000000 }",
+        "state": 0,
+        "state_value": {
+          "#meta": {},
+          "count": {
+            "#bigint": "1000000000000000"
+          }
+        },
+        "verdict": "fail"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 1,
+      "pass": 0
+    },
+    "trace_sha256": "077a940b1aec8c32a7815478f24201e711e12c1db7a5ec772947b828bf218fe6",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "bigint-ignored-key-fail",
+  "invocation": {
+    "args": [
+      "bigint-ignored-key-fail.qnt",
+      "bigint-ignored-key-fail.itf.json",
+      "--main=Base",
+      "--invariant=belowThree"
+    ]
+  },
+  "requirement": "R29: a FAIL row's state_value strips an ignored key and shows the normalised integer at the declared position"
+}

@@ -1,0 +1,5 @@
+module Count {
+  var count: int
+
+  val nonNegative = count >= 0
+}

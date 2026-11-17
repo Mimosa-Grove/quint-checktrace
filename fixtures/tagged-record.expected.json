@@ -1,0 +1,34 @@
+{
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "tagIsX",
+        "verdict": "pass"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 1,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "bd1a3adf6f5105d5f2c9ed3a7d83aaaa0bf17f557d3dd7a3ffa8a0de6e55dce4",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "tagged-record",
+  "invocation": {
+    "args": [
+      "tagged-record.qnt",
+      "tagged-record.itf.json",
+      "--main=Tagged",
+      "--invariant=tagIsX"
+    ]
+  },
+  "requirement": "R36: a tag-bearing object with other fields is a record"
+}

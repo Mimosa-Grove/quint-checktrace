@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "#bigint",
+      "states/0/count"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "class10-bigint",
+  "invocation": {
+    "args": [
+      "class10-bigint.qnt",
+      "class10-bigint.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a malformed #bigint is refused (class 10)"
+}

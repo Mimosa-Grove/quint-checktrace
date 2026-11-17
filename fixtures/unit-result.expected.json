@@ -1,0 +1,28 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "pair",
+      "0",
+      "#tup"
+    ],
+    "must_not_contain": [
+      "QNT"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "probe",
+  "expected_stage": "evaluate",
+  "fixture": "unit-result",
+  "invocation": {
+    "args": [
+      "unit-result.qnt",
+      "unit-result.itf.json",
+      "--main=Unit",
+      "--invariant=pair"
+    ]
+  },
+  "provenance": {
+    "probe": "Evaluator probe: a tuple result is a successful non-boolean value. Command, run from the fixtures root: $HOME/.quint/rust-evaluator-v0.7.1/quint_evaluator evaluate-at-state-from-stdin < probes/unit-result.json Observed at exit 0: {\"results\":[{\"value\":{\"#tup\":[{\"#tup\":[]},{\"#tup\":[]}]}}]}"
+  },
+  "requirement": "R36: a successful tuple result is refused, naming the invariant, state index and #tup form"
+}

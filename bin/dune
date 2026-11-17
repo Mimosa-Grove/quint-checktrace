@@ -1,0 +1,8 @@
+(executable
+ (name main)
+ (public_name quint-checktrace)
+ (libraries quint_checktrace cmdliner))
+
+(install
+ (section bin)
+ (files evaluator-digests.json))

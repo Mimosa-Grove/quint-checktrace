@@ -1,0 +1,18 @@
+{
+  "states": [
+    {
+      "#meta": {
+        "index": 0
+      },
+      "count": {
+        "#bigint": "0"
+      },
+      "noise": {
+        "#bigint": "5"
+      }
+    }
+  ],
+  "vars": [
+    "count"
+  ]
+}

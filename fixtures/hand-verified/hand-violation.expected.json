@@ -1,0 +1,45 @@
+{
+  "category": "violation",
+  "derivation": "hand-violation.derivation.md",
+  "expected_exit": 1,
+  "expected_report": {
+    "exit": 1,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "belowThree",
+        "rendering": "{ count: 3 }",
+        "state": 3,
+        "state_value": {
+          "#meta": {},
+          "count": {
+            "#bigint": "3"
+          }
+        },
+        "verdict": "fail"
+      }
+    ],
+    "source": null,
+    "source_mismatch": false,
+    "states": 4,
+    "status": null,
+    "summary": {
+      "fail": 1,
+      "pass": 0
+    },
+    "trace_sha256": "b0c455494ded03e06bdc3db7d6475213b11071a1298315aca66aedf374c05404",
+    "unknown_top_level_fields": []
+  },
+  "expected_silent": [],
+  "expected_source": "hand",
+  "fixture": "hand-violation",
+  "invocation": {
+    "args": [
+      "hand-violation.qnt",
+      "hand-violation.itf.json",
+      "--main=HandViolation",
+      "--invariant=belowThree"
+    ]
+  },
+  "requirement": "R46: a violation fixture with a hand-derived failing state index"
+}

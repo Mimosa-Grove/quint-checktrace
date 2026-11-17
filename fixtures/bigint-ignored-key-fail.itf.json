@@ -1,0 +1,38 @@
+{
+  "states": [
+    {
+      "#meta": {
+        "index": 0
+      },
+      "count": {
+        "c": [
+          {
+            "#bigint": "10"
+          }
+        ],
+        "e": {
+          "#bigint": "15"
+        },
+        "s": {
+          "#bigint": "1"
+        }
+      },
+      "extra": {
+        "c": [
+          {
+            "#bigint": "10"
+          }
+        ],
+        "e": {
+          "#bigint": "15"
+        },
+        "s": {
+          "#bigint": "1"
+        }
+      }
+    }
+  ],
+  "vars": [
+    "count"
+  ]
+}

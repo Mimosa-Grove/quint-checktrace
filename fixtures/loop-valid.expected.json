@@ -1,0 +1,36 @@
+{
+  "expected_evaluation_calls": 3,
+  "expected_exit": 0,
+  "expected_report": {
+    "exit": 0,
+    "ignored_vars": [],
+    "invariants": [
+      {
+        "name": "nonNegative",
+        "verdict": "pass"
+      }
+    ],
+    "loop": 1,
+    "source": null,
+    "source_mismatch": false,
+    "states": 3,
+    "status": null,
+    "summary": {
+      "fail": 0,
+      "pass": 1
+    },
+    "trace_sha256": "5ef61cf2aa1d6b7998439a4c54486c149a18b251cc93309b2ae142c54bc06020",
+    "unknown_top_level_fields": []
+  },
+  "expected_source": "requirements",
+  "fixture": "loop-valid",
+  "invocation": {
+    "args": [
+      "loop-valid.qnt",
+      "loop-valid.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a loop index within the state range is accepted and every state is checked once"
+}

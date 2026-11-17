@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "l",
+      "states/0/l"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "class13-list-element",
+  "invocation": {
+    "args": [
+      "class13-list-element.qnt",
+      "class13-list-element.itf.json",
+      "--main=ListInt",
+      "--invariant=ok"
+    ]
+  },
+  "requirement": "R36: a List[int] carrying a string is refused (class 13)"
+}

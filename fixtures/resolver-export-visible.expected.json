@@ -1,0 +1,22 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "resolve",
+      "exported",
+      "visible"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "resolve",
+  "fixture": "resolver-export-visible",
+  "invocation": {
+    "args": [
+      "resolver-export-visible.qnt",
+      "resolver-export-visible.itf.json",
+      "--main=ExportHolder",
+      "--invariant=exported"
+    ]
+  },
+  "requirement": "R3: a name visible only through an export, not declared in the main module, is refused"
+}

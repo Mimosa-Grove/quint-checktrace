@@ -1,0 +1,28 @@
+{
+  "category": "evaluation-error",
+  "derivation": "hand-evaluation-error.derivation.md",
+  "expected_diagnostic": {
+    "must_contain": [
+      "evaluate",
+      "atC",
+      "0",
+      "QNT500"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_silent": [
+    "atC"
+  ],
+  "expected_source": "hand",
+  "expected_stage": "evaluate",
+  "fixture": "hand-evaluation-error",
+  "invocation": {
+    "args": [
+      "hand-evaluation-error.qnt",
+      "hand-evaluation-error.itf.json",
+      "--main=HandUnbound",
+      "--invariant=atC"
+    ]
+  },
+  "requirement": "R46: an evaluation-error fixture with its expected stage"
+}

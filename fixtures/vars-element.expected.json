@@ -1,0 +1,23 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "vars",
+      "1",
+      "vars/1"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "vars-element",
+  "invocation": {
+    "args": [
+      "vars-element.qnt",
+      "vars-element.itf.json",
+      "--main=Base",
+      "--invariant=nonNegative"
+    ]
+  },
+  "requirement": "R36: a non-string vars element is refused, naming the element and its path"
+}

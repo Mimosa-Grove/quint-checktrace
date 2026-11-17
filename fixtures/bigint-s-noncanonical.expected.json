@@ -1,0 +1,24 @@
+{
+  "expected_diagnostic": {
+    "must_contain": [
+      "decode",
+      "class 10",
+      "#bigint",
+      "not a decimal string",
+      "states/0/x/s"
+    ]
+  },
+  "expected_exit": 2,
+  "expected_source": "requirements",
+  "expected_stage": "decode",
+  "fixture": "bigint-s-noncanonical",
+  "invocation": {
+    "args": [
+      "bigint-s-noncanonical.qnt",
+      "bigint-s-noncanonical.itf.json",
+      "--main=BigRefusal",
+      "--invariant=ok"
+    ]
+  },
+  "requirement": "R36: a non-decimal #bigint member of the chunk shape is refused at the member position (class 10)"
+}

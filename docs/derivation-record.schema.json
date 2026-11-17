@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quint-checktrace:derivation-record:0.1.0",
+  "title": "quint-checktrace derivation record",
+  "description": "One committed derivation record for one (path, main, invariant) triple. The record fixes what the corpus gate replays without re-running Quint: the command, both output streams, the exit code and the digest set of the specification and its transitive imports. The gate reads the specification path, the main module and the invariant name from the command line and compares them with the manifest row; this schema does not repeat those fields. Digests are taken at derivation time from the module resolution reported by quint parse --source-map and are relativised against the corpus tree root, so every recorded path resolves inside the corpus without re-resolving the module graph. This schema validates shape only: the recorded exit code's agreement with the outcome classified from the two streams is the gate's registry comparison, a semantic rule the schema cannot check because the document carries no outcome field. Two further boundaries belong to the gate: the schema does not parse command (the gate reads the specification path, the main module and the invariant name from it, and a command it cannot parse is a gate refusal), and it does not enforce corpus containment (propertyNames refuses a leading slash and any parent-directory segment, while a path that escapes the corpus tree after normalisation is refused by the gate).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["command", "stdout", "stderr", "exit_code", "spec_sha256", "imports"],
+  "properties": {
+    "command": {
+      "description": "The derivation command line, run from the corpus tree root, naming the specification path, the main module and the invariant. The path and main are recorded relative to the corpus tree root.",
+      "type": "string",
+      "minLength": 1
+    },
+    "stdout": {
+      "description": "The complete standard output capture of the derivation run. Admission reads the success markers from this stream.",
+      "type": "string"
+    },
+    "stderr": {
+      "description": "The complete standard error capture of the derivation run. A runtime error contributes its Quint diagnostic code here.",
+      "type": "string"
+    },
+    "exit_code": {
+      "description": "The recorded process exit code. It must agree with the outcome classified from the two streams; it is not itself an admission test. That agreement is checked by the gate's registry comparison, not by this schema, which has no outcome field to compare against.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 255
+    },
+    "spec_sha256": {
+      "description": "The sha256 of the specification file at derivation time, as 64 lowercase hexadecimal characters.",
+      "allOf": [{"$ref": "#/$defs/sha256"}]
+    },
+    "imports": {
+      "description": "The transitive import digest map. Each key is a corpus-relative path of a file the specification imports, directly or transitively; each value is that file's sha256 at derivation time. The map is generated mechanically from the source map and is not written by hand. A key with a leading slash or a parent-directory segment is refused here; a path that escapes the corpus tree after normalisation is refused by the gate.",
+      "type": "object",
+      "propertyNames": {"pattern": "^([^/]|[^/.][^/]+|\\.[^/.][^/]*|\\.\\.[^/]+)(/(|[^/]|[^/.][^/]+|\\.[^/.][^/]*|\\.\\.[^/]+))*$"},
+      "additionalProperties": {"$ref": "#/$defs/sha256"}
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "description": "A sha256 digest rendered as 64 lowercase hexadecimal characters.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
