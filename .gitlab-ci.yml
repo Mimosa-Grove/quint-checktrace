@@ -30,11 +30,15 @@ default:
     - apt-get install -y -qq --no-install-recommends ca-certificates curl git jq
       build-essential diffutils opam m4 pkg-config rsync unzip bubblewrap
     # Apalache, the bounded model checker behind `quint verify`, is a JVM
-    # application and the base image ships no Java: the spec-verify job fails
-    # without it. Pin the headless JDK and assert the major version.
-    - apt-get install -y -qq --no-install-recommends openjdk-17-jre-headless
-    - java -version 2>&1 | grep -q 'openjdk version "17\.'
-    - java -version 2>&1 | grep 'openjdk version'
+    # application: Apalache 0.62.4 is compiled for Java 21 (class file 65)
+    # and Debian bookworm ships 17, so the JDK comes from the Adoptium
+    # repository. Assert the major version after install.
+    - apt-get install -y -qq --no-install-recommends gpg ca-certificates
+    - curl -fsSL 'https://packages.adoptium.net/artifactory/api/gpg/key/public' | gpg --dearmor -o /etc/apt/trusted.gpg.d/adoptium.gpg
+    - echo "deb https://packages.adoptium.net/artifactory/deb bookworm main" > /etc/apt/sources.list.d/adoptium.list
+    - apt-get update -qq
+    - apt-get install -y -qq --no-install-recommends temurin-21-jre
+    - java -version 2>&1 | grep -q 'version "21\.'
     # Quint toolchain and the version assertion.
     - npm install -g "@informalsystems/quint@${QUINT_VERSION}"
     - test "$(quint --version)" = "$QUINT_VERSION"
@@ -137,7 +141,8 @@ spec-lint:
       fail=0
       for f in $(find fixtures test/corpus/hand-verified test/regressions -name '*.qnt' | sort); do
         [ "$(basename "$f")" = "spec.qnt" ] && continue
-        quint-audit lint "$f" >/dev/null 2>&1; rc=$?
+        rc=0
+        quint-audit lint "$f" >/dev/null 2>&1 || rc=$?
         want=$(expected_rc "$f")
         if [ "$rc" != "$want" ]; then
           echo "lint: $f exited $rc, expected $want"
