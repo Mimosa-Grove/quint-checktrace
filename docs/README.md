@@ -106,7 +106,7 @@ regenerates the records and traces for every derive invariant.
 
 ## The deadline benchmark record
 
-`bench-deadline.md` records how long the decoder's deadline machinery takes
+`benchmarks.md` records how long the decoder's deadline machinery takes
 on one machine: the per-node cost of a flat decode, and the refusal time and
 node count of wide-member-name decodes under a one-second deadline. The
 numbers come from `maintenance/bench_deadline`, which reports and never

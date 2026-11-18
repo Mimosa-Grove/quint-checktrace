@@ -1,6 +1,8 @@
 # Deadline benchmark
 
-A record, not a gate. The values below are what one machine measured. The
+The deadline mechanism is a shipping feature (`--deadline`); this file
+records its measured behaviour. A record, not a gate. The values below
+are what one machine measured. The
 test suite's deadline cells assert mechanism properties (one deadline check
 per visited node, expiry at the first check past the deadline) and carry no
 durations, so nothing in the suite depends on these numbers and no run fails

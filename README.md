@@ -1,7 +1,7 @@
 # quint-checktrace
 
 quint-checktrace checks that a software system's actual behaviour
-matches its formal Quint specification, by comparing recorded
+matches its formal [Quint](https://quint.sh/) specification, by comparing recorded
 execution traces against what the spec says should happen. The
 benefit: Quint models are only paper promises until something
 connects them to real code - this tool closes that gap, so bugs where
@@ -57,7 +57,7 @@ Invariants
 Summary: 1 pass, 1 fail (exit 1)
 ```
 
-The corpus gate replays the checked-in fixtures instead of a single
+The gate mode replays whole sets of checks at once instead of a single
 check:
 
 ```sh
@@ -72,6 +72,23 @@ for these recordings is ITF, maintained by the Apalache project.
 quint-checktrace reads the trace and checks each recorded state
 against the invariants you name.
 
+## Where traces come from
+
+Traces are produced by the tools that run specifications and systems.
+Quint's simulator writes one directly:
+
+```sh
+quint run ledger.qnt --main=Ledger --max-samples=10 \
+  --out-itf=out/ledger.itf.json
+```
+
+Apalache writes one with `--out-itf` during a verification run, and a
+system under test can record its own states in the same shape. Quint
+itself can simulate, model-check, and display such traces - but
+nothing in the Quint toolchain decides whether a given, already
+recorded trace obeys the specification. That decision is what
+quint-checktrace adds.
+
 ## What is a Quint specification?
 
 A Quint specification is a precise description of what a system is
@@ -79,6 +96,26 @@ allowed to do, written in a language a model checker can reason about.
 If you have verified your design in Quint, the specification is your
 statement of intended behaviour. quint-checktrace checks that the
 implementation, as recorded in traces, stayed within that statement.
+
+## Where are the specifications?
+
+The specifications this tool checks against are yours - the `.qnt`
+file you pass on the command line. The repository's own published
+contract has three layers:
+
+- `docs/*.schema.json` - the machine-checkable contract for the
+  three JSON artefacts: what a check's report must contain, what the
+  corpus manifest must contain, and what a derivation record must
+  contain.
+- `fixtures/` - the specification-plus-trace pairs with expected
+  outcomes that pin the checker's behaviour case by case (see The
+  fixtures and the corpus, below).
+- `test/corpus/` - real-world Quint specifications harvested from
+  published packages and third-party projects, each with a recorded
+  verdict (the acceptance evidence, below).
+
+Design documents are maintained outside the repository and do not
+ship.
 
 ## What pass, fail and error mean
 
@@ -110,17 +147,27 @@ the forwarded state values. That object validates against
 `docs/report-schema.json`, which ships in this repository together with
 `docs/manifest.schema.json` and `docs/derivation-record.schema.json`.
 
-## The corpus
+## The fixtures and the corpus
 
-`fixtures/` is the regression net. It holds 125 edge fixtures and 8
+Two different sets of evidence live in the repository.
+
+`fixtures/` is the regression net: 125 edge fixtures and 8
 hand-verified fixtures, 134 specification files in all. Each fixture
-pairs a specification and a trace with a complete expected outcome, so
-a decoder, report or evaluator change that alters a verdict is caught
-by comparison rather than by review. `--gate` runs the whole set: it
-replays the recorded corpus and the hand-verified fixtures, prints a
-counts line and the marker `== END OF GATE RUN ==` on every exit, and
-exits 1 on any disagreement. A missing marker is a crashed gate, never
-a pass.
+pairs a specification and a trace with a complete expected outcome,
+so a decoder, report or evaluator change that alters a verdict is
+caught by comparison rather than by review.
+
+`test/corpus/` is the acceptance evidence: real Quint specifications
+harvested from published packages and third-party projects, each
+paired with a recorded verdict. The corpus exists to prove that the
+checker agrees with recorded outcomes on specifications it did not
+shape - the difference between passing your own tests and working on
+the Quint that exists in the wild.
+
+The gate above replays the recorded corpus and the hand-verified
+fixtures, prints a counts line and the marker `== END OF GATE RUN ==`
+on every exit, and exits 1 on any disagreement. A missing marker is a
+crashed gate, never a pass.
 
 ## Install and requirements
 
@@ -154,6 +201,22 @@ dune build @fmt --auto-promote   # promote formatting once
 dune build @fmt                  # must then be clean
 zanuda -dir .                    # advisory-level lint; exits 0 when clean
 ```
+
+## Repository layout
+
+- `docs/` - the three JSON schemas, the corpus derivation recipe
+  (`docs/README.md`), and the benchmark record
+  (`docs/benchmarks.md`).
+- `fixtures/` and `test/` - the regression net and the corpus
+  described above.
+- `lib/`, `bin/`, `maintenance/` - the checker, its entry point and
+  the corpus tooling.
+
+The checker accepts `--deadline=<seconds>`. A decode that exceeds the
+budget stops and reports expiry instead of running on, so a hostile
+trace cannot hold the process open. `docs/benchmarks.md` records the
+measured behaviour of that budget on named hardware; it is evidence,
+not a test.
 
 ## Licence
 
