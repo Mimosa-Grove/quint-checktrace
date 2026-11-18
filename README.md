@@ -3,17 +3,17 @@
 quint-checktrace checks that a software system's actual behaviour
 matches its formal [Quint](https://quint.sh/) specification, by comparing recorded
 execution traces against what the spec says should happen. The
-benefit: Quint models are only paper promises until something
-connects them to real code - this tool closes that gap, so bugs where
-the implementation silently diverges from the verified design get
-caught automatically instead of by luck. To use it, you run your
+benefit of this package is that Quint models are only paper promises until something
+connects them to real code. This tool closes that gap, so bugs where
+the implementation silently diverges from the verified design are
+caught automatically instead of by luck. To use it, run your
 system (or Quint itself) to produce a trace file, point
 quint-checktrace at the trace plus the spec, and it reports pass,
-fail, or error - with a human-readable report and machine-checkable
-records that work in CI.
+fail, or error. A human-readable report and machine-checkable
+records that work in CI are generated.
 
 Status: the specification, the three JSON schemas and the fixture
-corpus are complete, and the checker implements the decoder, the
+corpus are complete. The checker implements the decoder, the
 evaluator client, the human and machine reports, and the corpus gate.
 
 ## Quick start
@@ -70,15 +70,15 @@ quint-checktrace --gate test/corpus/corpus test/corpus/manifest.json \
 A trace records a system's states step by step: one snapshot of the
 tracked variables per state. The format is the [Informal Trace
 Format](https://apalache-mc.org/docs/adr/015adr-trace.html) (ITF)
-defined by the Apalache project - plain JSON, one object per state -
-with writer libraries available in [Python, Rust, Go and
+defined by the Apalache project. It is plain JSON, one object per state, 
+with writer libraries currently available in [Python, Rust, Go and
 TypeScript](https://apalache-mc.org/docs/adr/015adr-trace.html). By
 convention these files end in `.itf.json`.
 
 ## How a check works
 
 A check runs one specification against one trace. The trace supplies
-the recorded states; the specification supplies the invariants. For
+the recorded states and the specification supplies the invariants. For
 every recorded state, quint-checktrace evaluates each named invariant
 with Quint's own evaluator, against that state's variable values, and
 reports pass or fail per invariant.
@@ -90,7 +90,7 @@ the verdict comes from the invariants, at the states you recorded.
 
 ## Where traces come from
 
-Three sources, one of which is yours:
+Three sources:
 
 - **The specification itself.** Quint's simulator writes ITF
   directly:
@@ -103,15 +103,15 @@ Three sources, one of which is yours:
   Checking a simulated trace is the sanity check: the simulator and
   the checker must agree.
 
-- **Apalache.** A verification run writes its counterexample with
-  `--out-itf`. Checking a counterexample is the pointed question: is
+- **Apalache.** A verification run writes its counter example with
+  `--out-itf`. Checking a counter example is the pointed question: is
   this failure reproducible against the spec?
 
 - **Your system.** The implementation under test does not emit ITF on
   its own; you record its states. At the points worth checking, dump
-  the tracked variables as ITF JSON - a state is one object mapping
-  variable names to values, so a recorder is small, and the ITF
-  libraries above handle the format. This is the trace that matters:
+  the tracked variables as ITF JSON. A state is one object, mapping
+  variable names to values. An ITF JSON recorder is small, and the ITF
+  libraries above handle the format. This is the trace that matters - 
   your program's actual behaviour, measured against the spec.
 
 Quint itself can simulate, model-check, and display such traces - but
