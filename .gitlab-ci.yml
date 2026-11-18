@@ -153,7 +153,27 @@ spec-lint:
 
 spec-verify:
   stage: test
-  timeout: 90m
+  # Per-shard budget. Four matrix jobs run in parallel, one JVM per runner
+  # (-P 1 inside the shard). The budget covers the measured worst case of
+  # one shard with margin.
+  timeout: 45m
+  # RAM pin. The packaged apalache-mc launcher sets a 4 GB JVM heap
+  # (-Xmx4096m) unless JVM_ARGS carries a heap flag. The two recorded
+  # heap-out verdicts need the JVM to exhaust that heap and print "Ran out
+  # of heap memory". Under memory pressure the OS kills the process
+  # instead, and the verdict reads no-verdict. The tag pipeline reproduced
+  # that failure on the default small runner (2 vCPU / 8 GB); the medium
+  # runner (4 vCPU / 16 GB) is the next class and gives the 4 GB heap and
+  # Z3 headroom. Both runner shapes are from the GitLab hosted-runner
+  # documentation.
+  tags:
+    - saas-linux-medium-amd64
+  # Four shards, one GitLab job each: every shard owns its own job-timeout
+  # budget, so the pipeline no longer depends on one job finishing 55
+  # bounded verifies under a single 90-minute wall.
+  parallel:
+    matrix:
+      - SHARD: ["0", "1", "2", "3"]
   # Tiered (2026-11-18): the bounded verifies are the slowest gate in
   # the pipeline (55 model-checking runs), so they do not run on every
   # push. They run unconditionally on release tags, on nightly
@@ -213,7 +233,7 @@ spec-verify:
         base=$(basename "$path" .qnt)
         want=$(expect "$base" "$inv")
         run_once() {
-          out=$(timeout 300 quint verify "$path" --main="$main" --invariant="$inv" --max-steps=3 2>&1) || true
+          out=$(timeout 900 quint verify "$path" --main="$main" --invariant="$inv" --max-steps=3 2>&1) || true
           classify "$out"
         }
         got=$(run_once)
@@ -223,19 +243,48 @@ spec-verify:
         fi
         if [ "$got" != "$want" ]; then
           echo "verify: $path (main $main) invariant $inv: expected $want, got $got"
-          echo "$path $inv" >> "$CI_PROJECT_DIR/verify-failures.txt"
+          echo "$path $inv" >> "$CI_PROJECT_DIR/verify-failures-$shard.txt"
         else
           echo "verify: $inv [$got] as recorded"
         fi
       }
-      export -f expect classify verify_one
-      cd test/corpus/corpus
-      rm -f "$CI_PROJECT_DIR/verify-failures.txt"
-      jq -r '.[] | select(.main != null) | . as $r | .invariants[] | [$r.path, $r.main, .name] | @tsv' ../manifest.json \
-        | xargs -P 2 -L 1 bash -c 'verify_one "$0" "$1" "$2"'
-      if [ -f "$CI_PROJECT_DIR/verify-failures.txt" ]; then
-        echo "spec verify: FAILED triples:"
-        cat "$CI_PROJECT_DIR/verify-failures.txt"
+      shard="${SHARD:?the shard matrix variable is unset}"
+      shard_total=4
+      case "$shard" in
+        0|1|2|3) ;;
+        *) echo "spec verify: bad shard index $shard"; exit 1 ;;
+      esac
+      if [ -n "${CI_NODE_INDEX:-}" ] && [ "$CI_NODE_INDEX" -ne $((shard + 1)) ]; then
+        echo "spec verify: matrix shard $shard does not match CI_NODE_INDEX $CI_NODE_INDEX"
         exit 1
       fi
-      echo "spec verify: every derive triple reproduced its recorded verdict"
+      cd test/corpus/corpus
+      rm -f "$CI_PROJECT_DIR/verify-failures-$shard.txt"
+      # Shard by position in the triple list: shard s takes indices
+      # s, s+4, s+8, ... The list is the same manifest order the recorded
+      # verdicts were produced from. One run at a time: two JVMs on one
+      # runner doubled wall time and starved both heaps.
+      jq -r '.[] | select(.main != null) | . as $r | .invariants[] | [$r.path, $r.main, .name] | @tsv' ../manifest.json > "$CI_PROJECT_DIR/spec-triples-$shard.tsv"
+      mapfile -t triples < "$CI_PROJECT_DIR/spec-triples-$shard.tsv"
+      total=${#triples[@]}
+      if [ "$total" -eq 0 ]; then
+        echo "spec verify: the manifest produced no derive triples"
+        exit 1
+      fi
+      ran=0
+      for ((i=shard; i<total; i+=shard_total)); do
+        IFS=$'\t' read -r path main inv <<< "${triples[$i]}"
+        verify_one "$path" "$main" "$inv"
+        ran=$((ran + 1))
+      done
+      echo "spec verify: shard $shard ran $ran of $total triples"
+      if [ "$ran" -eq 0 ]; then
+        echo "spec verify: shard $shard ran no triples"
+        exit 1
+      fi
+      if [ -f "$CI_PROJECT_DIR/verify-failures-$shard.txt" ]; then
+        echo "spec verify: FAILED triples in shard $shard:"
+        cat "$CI_PROJECT_DIR/verify-failures-$shard.txt"
+        exit 1
+      fi
+      echo "spec verify: shard $shard reproduced every recorded verdict"
