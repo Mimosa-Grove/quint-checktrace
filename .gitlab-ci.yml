@@ -47,9 +47,10 @@ default:
         opam switch create "$OCAML_VERSION" --yes
       fi
     - eval "$(opam env --switch="$OCAML_VERSION" --set-switch)"
+    - opam pin add --yes quint-audit "$QUINT_AUDIT_PIN"
     - opam install --yes "dune.$DUNE_VERSION" cmdliner alcotest qcheck
       "ocamlformat.$OCAMLFORMAT_VERSION" "zanuda.$ZANUDA_VERSION"
-      "$QUINT_AUDIT_PIN"
+      quint-audit
     - test "$(dune --version)" = "$DUNE_VERSION"
     - test "$(ocamlformat --version)" = "$OCAMLFORMAT_VERSION"
     - test "$(ocamlopt -version)" = "$OCAML_VERSION"
