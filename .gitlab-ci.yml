@@ -81,7 +81,7 @@ default:
       missing=0
       for tool in basename cp cut diff find gcc git grep head jq m4 make \
                   mktemp node npm ocamlopt ocamlformat opam pkg-config \
-                  printf quint quint-audit rsync sha256sum sort tail \
+                  printf quint quint-audit rsync sha256sum sort tail timeout \
                   unzip zanuda java; do
         if ! command -v "$tool" >/dev/null 2>&1; then
           echo "toolchain: $tool is missing"; missing=1
@@ -154,6 +154,18 @@ spec-lint:
 spec-verify:
   stage: test
   timeout: 90m
+  # Tiered (2026-11-18): the bounded verifies are the slowest gate in
+  # the pipeline (55 model-checking runs), so they do not run on every
+  # push. They run unconditionally on release tags, on nightly
+  # schedules, and on demand; the push pipeline stays fast, and the
+  # recorded verdicts still reproduce at every point that matters -
+  # a release tag is exactly such a point. The nightly schedule is
+  # created once in the GitLab UI (CI/CD - Schedules, nightly, main).
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_COMMIT_TAG'
+    - when: manual
+      allow_failure: true
   script:
     - |
       set -e
@@ -196,19 +208,34 @@ spec-verify:
         else echo no-verdict
         fi
       }
-      cd test/corpus/corpus
-      jq -r '.[] | select(.main != null) | . as $r | .invariants[] | [$r.path, $r.main, .name] | @tsv' ../manifest.json \
-        | while IFS=$'\t' read -r path main inv; do
-          base=$(basename "$path" .qnt)
-          want=$(expect "$base" "$inv")
-          rc=0
-          out=$(quint verify "$path" --main="$main" --invariant="$inv" --max-steps=3 2>&1) || rc=$?
-          got=$(classify "$out")
-          if [ "$got" != "$want" ]; then
-            echo "verify: $path (main $main) invariant $inv: expected $want, got $got (exit $rc)"
-            printf '%s\n' "$out" | tail -5
-            exit 1
-          fi
+      verify_one() {
+        path="$1"; main="$2"; inv="$3"
+        base=$(basename "$path" .qnt)
+        want=$(expect "$base" "$inv")
+        run_once() {
+          out=$(timeout 300 quint verify "$path" --main="$main" --invariant="$inv" --max-steps=3 2>&1) || true
+          classify "$out"
+        }
+        got=$(run_once)
+        # the recorded transient: one no-verdict re-ran stable - retry once
+        if [ "$got" = "no-verdict" ] && [ "$want" != "no-verdict" ]; then
+          got=$(run_once)
+        fi
+        if [ "$got" != "$want" ]; then
+          echo "verify: $path (main $main) invariant $inv: expected $want, got $got"
+          echo "$path $inv" >> "$CI_PROJECT_DIR/verify-failures.txt"
+        else
           echo "verify: $inv [$got] as recorded"
-        done
+        fi
+      }
+      export -f expect classify verify_one
+      cd test/corpus/corpus
+      rm -f "$CI_PROJECT_DIR/verify-failures.txt"
+      jq -r '.[] | select(.main != null) | . as $r | .invariants[] | [$r.path, $r.main, .name] | @tsv' ../manifest.json \
+        | xargs -P 2 -L 1 bash -c 'verify_one "$0" "$1" "$2"'
+      if [ -f "$CI_PROJECT_DIR/verify-failures.txt" ]; then
+        echo "spec verify: FAILED triples:"
+        cat "$CI_PROJECT_DIR/verify-failures.txt"
+        exit 1
+      fi
       echo "spec verify: every derive triple reproduced its recorded verdict"
