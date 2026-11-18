@@ -56,8 +56,11 @@ default:
     - zanuda -version
     # Evaluator provisioning: the pinned Quint fetches the Rust evaluator on
     # first use; the digest is asserted against the shipped table before any
-    # gate runs.
-    - mkdir -p .ci-probe && printf 'module Tiny {\n  var count: int\n  action init = count'"'"' = 0\n  action step = count'"'"' = count + 1\n  val nonNegative = count >= 0\n}\n' > .ci-probe/tiny.qnt
+    # gate runs. The probe line is a block scalar: its text contains a
+    # colon-space, which a plain scalar would turn into a yaml mapping
+    # and GitLab would reject at pipeline creation.
+    - |
+      mkdir -p .ci-probe && printf 'module Tiny {\n  var count: int\n  action init = count'"'"' = 0\n  action step = count'"'"' = count + 1\n  val nonNegative = count >= 0\n}\n' > .ci-probe/tiny.qnt
     - cd .ci-probe && quint run tiny.qnt --main=Tiny --backend=rust --max-samples=1 --max-steps=2 --seed=0x1 --invariant=nonNegative --out-itf=tiny.itf.json && cd "$CI_PROJECT_DIR"
     - |
       expected=$(jq -r '.pins[] | select(.platform=="linux-x86_64") | .sha256' bin/evaluator-digests.json)
