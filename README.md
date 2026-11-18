@@ -7,14 +7,14 @@ benefit of this package is that Quint models are only paper promises until somet
 connects them to real code. This tool closes that gap, so bugs where
 the implementation silently diverges from the verified design are
 caught automatically instead of by luck. To use it, run your
-system (or Quint itself) to produce a trace file, point
+system (or Quint itself) to produce a trace file. Point
 quint-checktrace at the trace plus the spec, and it reports pass,
-fail, or error. A human-readable report and machine-checkable
-records that work in CI are generated.
+fail, or error. It generates a human-readable report and
+machine-checkable records that work in CI.
 
 Status: the specification, the three JSON schemas and the fixture
 corpus are complete. The checker implements the decoder, the
-evaluator client, the human and machine reports, and the corpus gate.
+evaluator client, the human and machine reports and the corpus gate.
 
 ## Quick start
 
@@ -70,7 +70,7 @@ quint-checktrace --gate test/corpus/corpus test/corpus/manifest.json \
 A trace records a system's states step by step: one snapshot of the
 tracked variables per state. The format is the [Informal Trace
 Format](https://apalache-mc.org/docs/adr/015adr-trace.html) (ITF)
-defined by the Apalache project. It is plain JSON, one object per state, 
+defined by the Apalache project. It is plain JSON, one object per state,
 with writer libraries currently available in [Python, Rust, Go and
 TypeScript](https://apalache-mc.org/docs/adr/015adr-trace.html). By
 convention these files end in `.itf.json`.
@@ -85,7 +85,7 @@ reports pass or fail per invariant.
 
 It is not a comparison of two traces: no second trace is needed, and
 the specification is never executed to produce one. If you want the
-spec's own behaviour as a reference, simulate it (next section) - but
+spec's own behaviour as a reference, simulate it (next section). But
 the verdict comes from the invariants, at the states you recorded.
 
 ## Where traces come from
@@ -103,18 +103,18 @@ Three sources:
   Checking a simulated trace is the sanity check: the simulator and
   the checker must agree.
 
-- **Apalache.** A verification run writes its counter example with
-  `--out-itf`. Checking a counter example is the pointed question: is
+- **Apalache.** A verification run writes its counterexample with
+  `--out-itf`. Checking a counterexample is the pointed question: is
   this failure reproducible against the spec?
 
 - **Your system.** The implementation under test does not emit ITF on
-  its own; you record its states. At the points worth checking, dump
+  its own. You record its states. At the points worth checking, dump
   the tracked variables as ITF JSON. A state is one object, mapping
   variable names to values. An ITF JSON recorder is small, and the ITF
-  libraries above handle the format. This is the trace that matters - 
+  libraries above handle the format. This is the trace that matters:
   your program's actual behaviour, measured against the spec.
 
-Quint itself can simulate, model-check, and display such traces - but
+Quint itself can simulate, model-check and display such traces. But
 nothing in the Quint toolchain decides whether a given, already
 recorded trace obeys the specification. That decision is what
 quint-checktrace adds.
@@ -129,14 +129,13 @@ implementation, as recorded in traces, stayed within that statement.
 
 ## Where are the specifications?
 
-The specifications this tool checks against are yours - the `.qnt`
+The specifications this tool checks against are yours: the `.qnt`
 file you pass on the command line. The repository's own published
 contract has three layers:
 
 - `docs/*.schema.json` - the machine-checkable contract for the
-  three JSON artefacts: what a check's report must contain, what the
-  corpus manifest must contain, and what a derivation record must
-  contain.
+  three JSON artefacts. They define what a check's report, the
+  corpus manifest and a derivation record must contain.
 - `fixtures/` - the specification-plus-trace pairs with expected
   outcomes that pin the checker's behaviour case by case (see The
   fixtures and the corpus, below).
@@ -151,23 +150,24 @@ ship.
 
 - **Pass (exit 0).** Every requested invariant passed on every
   recorded state. A PASS row says exactly `no violation observed in
-  this trace`; a PASS covers the recorded states only, never the
+  this trace`. A PASS covers the recorded states only, never the
   specification as a proof.
 - **Fail (exit 1).** At least one requested invariant failed. The FAIL
   row names the invariant, the state index and a rendering of the
   violating state, for example `FAIL at state 3: { count: 3 }`.
-- **Error (exit 2).** The check did not complete: a usage error, a
-  missing or mismatched Quint, a missing evaluator, a parse failure, a
-  decode refusal, an unresolved invariant, an evaluation error, a
-  timeout, or an internal error. Exit 2 is never a specification
-  violation, and exit 1 is never a could-not-run.
+- **Error (exit 2).** The check did not complete. The cause is a
+  usage error, a missing or mismatched Quint, a missing evaluator, or
+  a parse failure. It can also be a decode refusal, an unresolved
+  invariant, an evaluation error, a timeout, or an internal error.
+  Exit 2 is never a specification violation, and exit 1 is never a
+  could-not-run.
 
 Every exit 2 diagnostic is one plain-text line on standard error that
 names the stage reached: `usage`, `quint`, `evaluator`, `parse`,
 `decode`, `resolve`, `evaluate` or `internal`. A decode refusal also
 names its refusal class and, where one exists, its JSON path or byte
 offset. The human report ends with one summary line of the exact form
-`Summary: <n> pass, <n> fail (exit <n>)`; when the trace's recorded
+`Summary: <n> pass, <n> fail (exit <n>)`. When the trace's recorded
 source differs from the supplied specification path, the summary ends
 with the token `source-mismatch`.
 
@@ -191,8 +191,8 @@ caught by comparison rather than by review.
 harvested from published packages and third-party projects, each
 paired with a recorded verdict. The corpus exists to prove that the
 checker agrees with recorded outcomes on specifications it did not
-shape - the difference between passing your own tests and working on
-the Quint that exists in the wild.
+shape. That is the difference between passing your own tests and
+working on the Quint that exists in the wild.
 
 The gate above replays the recorded corpus and the hand-verified
 fixtures, prints a counts line and the marker `== END OF GATE RUN ==`
@@ -203,25 +203,25 @@ crashed gate, never a pass.
 
 The checker is built from OCaml 5.3 sources with `dune build` and
 installed as `quint-checktrace`. At run time it requires Quint 0.33.1
-on `PATH` and the Rust evaluator v0.7.1, whose binary is accepted by
-sha256 for the pinned platform (linux-x86_64). The version pair is part
-of the release contract.
+on `PATH`. It also requires the Rust evaluator v0.7.1, whose binary is
+accepted by sha256 for the pinned platform (linux-x86_64). The version
+pair is part of the release contract.
 
 The repository toolchain is OCaml and Quint. The corpus generator is
-`maintenance/build_fixtures.exe`; run it with `--root <directory>` to
+`maintenance/build_fixtures.exe`. Run it with `--root <directory>` to
 write the fixture tree under that directory. It recomputes each
 report's trace digest from the bytes it writes. The corpus gate's
-derivation script is `maintenance/derive_registry.exe`; its recipe is in
-`docs/README.md`. Run the gates with:
+derivation script is `maintenance/derive_registry.exe`. Its recipe is
+in `docs/README.md`. Run the gates with:
 
 ```sh
 ./run_tests.sh
 ```
 
-That command builds the checker and the generator, regenerates the
+That command builds the checker and the generator. It regenerates the
 fixture corpus in a scratch copy and diffs it against the committed
-tree, parses every fixture specification with Quint 0.33.1, and runs
-the test suite and the seed-controlled property runner. It prints
+tree. It parses every fixture specification with Quint 0.33.1, and
+runs the test suite and the seed-controlled property runner. It prints
 `RESULT: pass` or `RESULT: fail` and exits non-zero on failure.
 
 The formatting and lint gates are ocamlformat 0.29.0 and Zanuda 2.0.0:
@@ -245,7 +245,7 @@ zanuda -dir .                    # advisory-level lint; exits 0 when clean
 The checker accepts `--deadline=<seconds>`. A decode that exceeds the
 budget stops and reports expiry instead of running on, so a hostile
 trace cannot hold the process open. `docs/benchmarks.md` records the
-measured behaviour of that budget on named hardware; it is evidence,
+measured behaviour of that budget on named hardware. It is evidence,
 not a test.
 
 ## Licence
