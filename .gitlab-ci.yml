@@ -81,8 +81,8 @@ default:
       missing=0
       for tool in basename cp cut diff find gcc git grep head jq m4 make \
                   mktemp node npm ocamlopt ocamlformat opam pkg-config \
-                  printf quint quint-audit rsync sha256sum sort tail timeout \
-                  unzip zanuda java; do
+                  printf quint quint-audit rsync sha256sum setsid sort tail \
+                  timeout unzip zanuda java; do
         if ! command -v "$tool" >/dev/null 2>&1; then
           echo "toolchain: $tool is missing"; missing=1
         fi
@@ -155,17 +155,22 @@ spec-verify:
   stage: test
   # Per-shard budget. Four matrix jobs run in parallel, one JVM per runner
   # (-P 1 inside the shard). The budget covers the measured worst case of
-  # one shard with margin.
+  # one shard with margin: the heaviest recorded shard holds one heap-out
+  # run (mutantEq, 319 s measured at the pinned 4096 MB heap) and a
+  # violation class at about 58 s, so 13 runs at that mix come to about
+  # 1100 s - 2.4 times inside the 45-minute wall.
   timeout: 45m
   # RAM pin. The packaged apalache-mc launcher sets a 4 GB JVM heap
-  # (-Xmx4096m) unless JVM_ARGS carries a heap flag. The two recorded
-  # heap-out verdicts need the JVM to exhaust that heap and print "Ran out
-  # of heap memory". Under memory pressure the OS kills the process
-  # instead, and the verdict reads no-verdict. The tag pipeline reproduced
-  # that failure on the default small runner (2 vCPU / 8 GB); the medium
-  # runner (4 vCPU / 16 GB) is the next class and gives the 4 GB heap and
-  # Z3 headroom. Both runner shapes are from the GitLab hosted-runner
-  # documentation.
+  # (-Xmx4096m) unless JVM_ARGS carries a heap flag; the job exports the
+  # same value itself (see the script comment), so the recorded heap-out
+  # verdicts are asserted against a pinned heap, not a launcher default.
+  # The two recorded heap-out verdicts need the JVM to exhaust that heap
+  # and print "Ran out of heap memory". Under memory pressure the OS kills
+  # the process instead, and the verdict reads no-verdict. The tag
+  # pipeline reproduced that failure on the default small runner (2 vCPU /
+  # 8 GB); the medium runner (4 vCPU / 16 GB) is the next class and gives
+  # the 4 GB heap and Z3 headroom. Both runner shapes are from the GitLab
+  # hosted-runner documentation.
   tags:
     - saas-linux-medium-amd64
   # Four shards, one GitLab job each: every shard owns its own job-timeout
@@ -195,10 +200,37 @@ spec-verify:
       # most invariants verify clean; a recorded set is falsifiable at the
       # bound (the corpus is byte-pinned evidence, and a counterexample
       # found in it is a fact about the spec's source, not a repository
-      # defect); vizIR exceeds the model checker's default 4 GB heap on
-      # both its invariants (a recorded limitation of that specification's
-      # size). A run that deviates from its recorded verdict is a red
-      # pipeline: the verification verdicts must reproduce.
+      # defect); vizIR exceeds the model checker's heap on both its
+      # invariants (a recorded limitation of that specification's size).
+      # A run that deviates from its recorded verdict is a red pipeline:
+      # the verification verdicts must reproduce.
+      #
+      # Capture (2026-11-18): every run writes its output to a FILE and the
+      # file is classified. A command substitution around the run
+      # (out=$(timeout ... quint verify)) keeps the shell blocked on the
+      # pipe for as long as ANY process holds the write end: Quint hands
+      # the job's stdout to the Apalache JVM, a JVM that outlives the TERM
+      # keeps $( ) waiting, and the run cap then bounds the signal, not the
+      # wall. A file cannot block, so the cap is the wall again.
+      #
+      # Reap (2026-11-18): each run starts in its own session (setsid), so
+      # the deadline can signal the whole tree, and the group is killed once
+      # more after the direct child returns. Probed locally: with
+      # timeout --kill-after alone, a TERM-ignoring grandchild survived (the
+      # direct child died on TERM and timeout returned without escalating).
+      # Escalation here is TERM at the cap, KILL 30 s later. The cap is
+      # 900 s: 2.8 times the measured heap-out run (mutantEq, 319 s at the
+      # pinned heap), and the escalation keeps a run that reaches it from
+      # outliving its own wall.
+      #
+      # Heap (2026-11-18, the recorded expectation is pinned): the heap is
+      # set here, at the value the packaged launcher defaults to, so the
+      # heap-out rows are asserted against a 4096 MB heap deterministically
+      # instead of a launcher default that can drift. Apalache honours
+      # JVM_ARGS; Quint passes the environment through and has no heap flag
+      # of its own.
+      export JVM_ARGS=-Xmx4096m
+      command -v setsid >/dev/null 2>&1 || { echo "spec verify: setsid is missing"; exit 1; }
       expect() {
         case "$1/$2" in
           catalogue-partb/cataloguePresenceIsInert|\
@@ -221,11 +253,13 @@ spec-verify:
           *) echo ok ;;
         esac
       }
+      # classify sets `class` from the run's log FILE; the output is never
+      # held in a variable.
       classify() {
-        if printf '%s' "$1" | grep -q 'Ran out of heap memory'; then echo heap-out
-        elif printf '%s' "$1" | grep -q '\[violation\] Found an issue'; then echo violation
-        elif printf '%s' "$1" | grep -q '\[ok\] No violation found'; then echo ok
-        else echo no-verdict
+        class=no-verdict
+        if grep -q 'Ran out of heap memory' "$1"; then class=heap-out
+        elif grep -q '\[violation\] Found an issue' "$1"; then class=violation
+        elif grep -q '\[ok\] No violation found' "$1"; then class=ok
         fi
       }
       verify_one() {
@@ -233,16 +267,38 @@ spec-verify:
         base=$(basename "$path" .qnt)
         want=$(expect "$base" "$inv")
         run_once() {
-          out=$(timeout 900 quint verify "$path" --main="$main" --invariant="$inv" --max-steps=3 2>&1) || true
-          classify "$out"
+          run_log="$CI_PROJECT_DIR/verify-$shard-$base-$inv.log"
+          setsid quint verify "$path" --main="$main" --invariant="$inv" \
+            --max-steps=3 > "$run_log" 2>&1 &
+          run_pid=$!
+          (
+            sleep 900
+            kill -TERM -- "-$run_pid" 2>/dev/null
+            sleep 30
+            kill -KILL -- "-$run_pid" 2>/dev/null
+          ) &
+          watchdog=$!
+          last_rc=0
+          wait "$run_pid" || last_rc=$?
+          kill "$watchdog" 2>/dev/null || true
+          # a process that ignored TERM is still in the run's session:
+          # reap it before the next triple starts
+          kill -KILL -- "-$run_pid" 2>/dev/null || true
+          classify "$run_log"
         }
-        got=$(run_once)
-        # the recorded transient: one no-verdict re-ran stable - retry once
-        if [ "$got" = "no-verdict" ] && [ "$want" != "no-verdict" ]; then
-          got=$(run_once)
+        run_once
+        got=$class
+        # the recorded transient: one no-verdict re-ran stable - retry
+        # once, and only for a run that ended on its own. A run the
+        # deadline killed (TERM 143, KILL 137, timeout 124) is a wall, not
+        # a transient, and retrying it doubles the wall.
+        if [ "$got" = "no-verdict" ] && [ "$want" != "no-verdict" ] &&
+           [ "$last_rc" -ne 124 ] && [ "$last_rc" -ne 137 ] && [ "$last_rc" -ne 143 ]; then
+          run_once
+          got=$class
         fi
         if [ "$got" != "$want" ]; then
-          echo "verify: $path (main $main) invariant $inv: expected $want, got $got"
+          echo "verify: $path (main $main) invariant $inv: expected $want, got $got (exit $last_rc)"
           echo "$path $inv" >> "$CI_PROJECT_DIR/verify-failures-$shard.txt"
         else
           echo "verify: $inv [$got] as recorded"
