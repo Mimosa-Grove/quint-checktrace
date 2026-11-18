@@ -67,24 +67,54 @@ quint-checktrace --gate test/corpus/corpus test/corpus/manifest.json \
 
 ## What is a trace?
 
-A trace records a system's states step by step. The agreed JSON format
-for these recordings is ITF, maintained by the Apalache project.
-quint-checktrace reads the trace and checks each recorded state
-against the invariants you name.
+A trace records a system's states step by step: one snapshot of the
+tracked variables per state. The format is the [Informal Trace
+Format](https://apalache-mc.org/docs/adr/015adr-trace.html) (ITF)
+defined by the Apalache project - plain JSON, one object per state -
+with writer libraries available in [Python, Rust, Go and
+TypeScript](https://apalache-mc.org/docs/adr/015adr-trace.html). By
+convention these files end in `.itf.json`.
+
+## How a check works
+
+A check runs one specification against one trace. The trace supplies
+the recorded states; the specification supplies the invariants. For
+every recorded state, quint-checktrace evaluates each named invariant
+with Quint's own evaluator, against that state's variable values, and
+reports pass or fail per invariant.
+
+It is not a comparison of two traces: no second trace is needed, and
+the specification is never executed to produce one. If you want the
+spec's own behaviour as a reference, simulate it (next section) - but
+the verdict comes from the invariants, at the states you recorded.
 
 ## Where traces come from
 
-Traces are produced by the tools that run specifications and systems.
-Quint's simulator writes one directly:
+Three sources, one of which is yours:
 
-```sh
-quint run ledger.qnt --main=Ledger --max-samples=10 \
-  --out-itf=out/ledger.itf.json
-```
+- **The specification itself.** Quint's simulator writes ITF
+  directly:
 
-Apalache writes one with `--out-itf` during a verification run, and a
-system under test can record its own states in the same shape. Quint
-itself can simulate, model-check, and display such traces - but
+  ```sh
+  quint run ledger.qnt --main=Ledger --max-samples=10 \
+    --out-itf=out/ledger.itf.json
+  ```
+
+  Checking a simulated trace is the sanity check: the simulator and
+  the checker must agree.
+
+- **Apalache.** A verification run writes its counterexample with
+  `--out-itf`. Checking a counterexample is the pointed question: is
+  this failure reproducible against the spec?
+
+- **Your system.** The implementation under test does not emit ITF on
+  its own; you record its states. At the points worth checking, dump
+  the tracked variables as ITF JSON - a state is one object mapping
+  variable names to values, so a recorder is small, and the ITF
+  libraries above handle the format. This is the trace that matters:
+  your program's actual behaviour, measured against the spec.
+
+Quint itself can simulate, model-check, and display such traces - but
 nothing in the Quint toolchain decides whether a given, already
 recorded trace obeys the specification. That decision is what
 quint-checktrace adds.
