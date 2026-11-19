@@ -2,6 +2,13 @@
 opam-version: "2.0"
 version: "0.1.0"
 synopsis: "Trace-to-specification conformance for Quint"
+description:
+  "Checks recorded execution traces against a Quint specification's invariants, with a digest-pinned evaluator and a CI gate"
+maintainer: ["Phill Clarke <phill@mimosadev.org>"]
+authors: ["Phill Clarke <phill@mimosadev.org>"]
+license: "AGPL-3.0-or-later"
+homepage: "https://github.com/Mimosa-Grove/quint-checktrace"
+bug-reports: "https://github.com/Mimosa-Grove/quint-checktrace/issues"
 depends: [
   "ocaml"
   "dune" {>= "3.17"}
@@ -24,3 +31,4 @@ build: [
     "@doc" {with-doc}
   ]
 ]
+dev-repo: "git+https://github.com/Mimosa-Grove/quint-checktrace.git"

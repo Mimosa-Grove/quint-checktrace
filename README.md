@@ -201,11 +201,67 @@ crashed gate, never a pass.
 
 ## Install and requirements
 
-The checker is built from OCaml 5.3 sources with `dune build` and
-installed as `quint-checktrace`. At run time it requires Quint 0.33.1
-on `PATH`. It also requires the Rust evaluator v0.7.1, whose binary is
-accepted by sha256 for the pinned platform (linux-x86_64). The version
-pair is part of the release contract.
+The checker is built from OCaml 5.3 sources. You need OCaml 5.3, dune
+and opam.
+
+```sh
+git clone https://github.com/Mimosa-Grove/quint-checktrace
+cd quint-checktrace
+opam install . --yes
+eval $(opam env)
+```
+
+The binary lands in the opam switch, so the last line puts it on `PATH`
+for the current shell. Run `eval $(opam env)` again in a new shell.
+That installs `quint-checktrace` with the evaluator digest table beside
+it. To build without installing:
+
+```sh
+opam exec -- dune build
+# binary: _build/default/bin/main.exe
+```
+
+Quint is a runtime dependency. Install the pinned version:
+
+```sh
+npm i @informalsystems/quint@0.33.1 -g
+```
+
+The pin is part of the release contract: the typed decoder is written
+against quint 0.33.1's parse output, and that release downloads the
+evaluator version the checker pins. The checker finds `quint` on `PATH`,
+or takes an explicit path with `--quint /path/to/quint`.
+
+The Rust evaluator v0.7.1 is the second runtime dependency. Quint
+downloads it on first use of the rust backend. Quint 0.33.1 fetches the
+evaluator from its own GitHub release and installs it at
+`~/.quint/rust-evaluator-v0.7.1/quint_evaluator`. Quint does not verify
+the download. quint-checktrace checks that binary's sha256 against the
+table shipped beside the binary (`bin/evaluator-digests.json`, one row,
+`linux-x86_64`) and refuses any other digest before a check starts. The
+flag `--evaluator /path/to/quint_evaluator` selects another binary; the
+digest check still applies.
+
+Fetch the evaluator by running one simulation with the rust backend,
+against a fixture specification shipped in the repository:
+
+```sh
+mkdir -p out
+quint run fixtures/two-instance.qnt --main=TwoInstances --backend=rust \
+  --max-steps=2 --out-itf=out/two-instance.itf.json
+```
+
+The Quick start's first command is the smoke check, and this pair makes
+it a one-line run from the clone:
+
+```sh
+quint-checktrace fixtures/two-instance.qnt out/two-instance.itf.json \
+  --main=TwoInstances --invariant=both
+```
+
+It prints one PASS row and `Summary: 1 pass, 0 fail (exit 0)`. Any other
+result means the install is incomplete; the stderr line names the stage
+that failed.
 
 The repository toolchain is OCaml and Quint. The corpus generator is
 `maintenance/build_fixtures.exe`. Run it with `--root <directory>` to
